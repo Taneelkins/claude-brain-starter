@@ -12,6 +12,6 @@ Add a project to my Claude Brain at `{{VAULT}}/`. Project: $ARGUMENTS (if blank,
    - `<Project>/<Project> Gotchas.md` from `_templates/Gotchas.md` (empty sections are fine)
    - `Plans/<Project> Plans.md` from `_templates/Plans.md`, with whatever I said I want to do next
 5. Add a row to the **Projects** table in `Claude Brain.md` and to the table in `Plans/Plans.md`.
-6. If `Example Project` still exists, ask whether to delete it (its folder + `Plans/Example Project Plans.md` + its table rows).
+6. If `Example Game` still exists, ask whether to delete it (its folder + `Plans/Example Game Plans.md` + its table rows).
 
 Finish with a one-line summary of what you created.

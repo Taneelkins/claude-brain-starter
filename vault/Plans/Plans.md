@@ -11,7 +11,7 @@
 ## ▶️ Active projects
 | Project | Top of stack | Status |
 |---|---|---|
-| [[Example Project Plans]] | Replace this example with a real project (`/new-project`) | `next` |
+| [[Example Game Plans]] | Replace this example with a real game (`/new-game`) | `next` |
 
 ---
 

@@ -22,8 +22,15 @@
 | [[Feature]] | Loop |
 | [[Bug Fix]] | Loop |
 | [[Roblox Scripting]] | Loop |
+| [[UI Screen]] | Pipeline |
+| [[3D Asset]] | Pipeline |
 
-Add your own from `_templates/Workflow.md` when a kind of task keeps coming up (UI screen, blog post, release…).
+Shared by every Roblox workflow: [[Studio Safety]].
+
+Add your own from `_templates/Workflow.md` when a kind of task keeps coming up (VFX, sound, lore, monetization…).
+
+## Outputs
+Each task's files (briefs, previews, renders, build scripts) go in the game's `Work/<YYYY-MM-DD> <task>/` folder, outside `src/`. Pipelines add stage folders: `01 Brief/`, `02 Blockout/`…
 
 ## Rules
 - **Workflows say how; project notes say what.** Point at a project note; never copy its facts.

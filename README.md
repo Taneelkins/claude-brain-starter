@@ -1,90 +1,75 @@
-# 🧠 Claude Brain Starter
+# 🧠 Roblox Dev with Claude: Starter Kit
 
-An Obsidian vault that gives [Claude Code](https://claude.com/claude-code) a long-term memory you control.
+Everything you need to make Roblox games with [Claude Code](https://claude.com/claude-code) as your dev partner. One install gets you:
 
-Claude forgets everything between chats. Without a brain, every session starts with it re-exploring your code and re-learning the same traps. With one, it reads a few short notes at the start of each chat (where things are, what bit you last time, what's next), and you write what it learned back in with `/save`.
+| | What it is | Why it matters |
+|---|---|---|
+| **The Brain** | An Obsidian vault Claude reads at the start of every chat and writes back to with `/save` | Claude forgets everything between chats. The brain is its memory: where code lives, what broke last time, what's next |
+| **Studio bridge** | Claude ↔ Roblox Studio: reads/edits the place, runs real playtests, uploads assets | Claude can test its own work instead of you copy-pasting errors |
+| **Base framework** | A Roblox game skeleton with data saving, networking, UI, cleanup and an admin console already wired | You start on gameplay, not plumbing, and Claude always knows where code goes |
+| **3D pipeline** | Blender MCP (Claude drives Blender), Studio → Blender export, Substance automation, upload | Models from brief to in-game, step by step, with checkpoints |
+| **Workflows** | Step-by-step contracts for scripting, bug fixes, UI screens, 3D assets | Same quality every time; each one has a checklist Claude runs before showing you anything |
 
-```
-new chat ─▶ Claude reads: root index → Playbook → your project's note → the workflow for this task
-                │
-            does the work
-                │
-            /save ─▶ new facts, gotchas and next steps go back into the notes
-```
+## Setup
 
-## What you get
+**You need:**
+- [Obsidian](https://obsidian.md/download), [Claude Code](https://docs.claude.com/en/docs/claude-code/overview), git and [Node.js 22+](https://nodejs.org).
+- For Roblox: [Roblox Studio](https://create.roblox.com), [Rokit](https://github.com/rojo-rbx/rokit), [Blender](https://www.blender.org/download/) and [uv](https://docs.astral.sh/uv/) (`brew install uv`).
+- Mac is the main target. On Windows, run the script in Git Bash and the bridge's `install.ps1`.
 
-| Part | What it does |
-|---|---|
-| `Claude Brain.md` | Root index. Claude reads it first; it lists your projects. |
-| `Playbook/` | How the brain works (Structure Law, session habits) and **Claude Rules**, your global `CLAUDE.md`. |
-| `Plans/` | The backlog. "What's next?" reads this. One plans note per project. |
-| `Workflows/` | Repeatable contracts for kinds of work (Feature, Bug Fix): inputs, steps, checkpoints, a pass/fail audit. |
-| `Example Project/` | A filled-in sample so you can see the shape. Delete it once you have a real one. |
-| `_templates/` | Templates for new projects, plans, gotchas and workflows. |
-| `Roblox/` *(optional)* | Framework guide, module kit and gotchas for Roblox games, plus a Roblox Scripting workflow. Delete it if you don't make Roblox games. |
-| Slash commands | `/brain`, `/save`, `/brain-audit`, `/new-project` |
-| Obsidian plugins | [Waypoint](https://github.com/IdreesInc/Waypoint), [Folder Notes](https://github.com/LostPaul/obsidian-folder-notes), [Omnisearch](https://github.com/scambier/obsidian-omnisearch), [Tag Wrangler](https://github.com/pjeby/tag-wrangler), already configured |
-
-## Setup (5 minutes)
-
-**You need:** [Obsidian](https://obsidian.md/download), [Claude Code](https://docs.claude.com/en/docs/claude-code/overview) and git. macOS or Linux; on Windows, run the script in Git Bash or WSL.
-
-1. Clone this repo somewhere that isn't iCloud-synced, e.g. `~/Developer`:
+1. Clone this repo somewhere outside `~/Documents`:
    ```bash
    git clone https://github.com/Taneelkins/claude-brain-starter.git ~/Developer/claude-brain-starter
    ```
-2. Run the installer. It asks your name, then sets everything up:
+2. Run the installer. It asks your name, and whether to set up the Roblox tools (say yes):
    ```bash
    ~/Developer/claude-brain-starter/install.sh
    ```
-   - Creates the vault at `~/Documents/Claude Brain` (use `VAULT=/some/path ./install.sh` to put it somewhere else)
-   - Downloads the 4 Obsidian plugins
-   - Installs the slash commands into `~/.claude/commands`
-   - Links `~/.claude/CLAUDE.md` to `Playbook/Claude Rules.md`. If you already have a `CLAUDE.md`, it's left alone and the script tells you how to merge.
-3. Open Obsidian → **Open folder as vault** → pick the vault folder → **Trust author and enable plugins**.
-4. Open Claude Code in your project folder and run:
+   - **Brain:** creates the vault at `~/Documents/Claude Brain` (`VAULT=/path ./install.sh` to change it).
+   - **Obsidian:** downloads the 4 plugins it uses.
+   - **Claude:** installs `/brain`, `/save`, `/brain-audit`, `/new-project` and `/new-game`, and links `~/.claude/CLAUDE.md` to the vault's rules. An existing `CLAUDE.md` is never overwritten.
+   - **Roblox tools:**
+     - Clones and builds the [Studio bridge](https://github.com/Taneelkins/claude-studio-bridge) into `~/claude-studio-bridge`, installs its Studio plugin and its always-on daemon, and registers it with Claude.
+     - Registers the Blender MCP server and installs its Blender add-on.
+3. Open Obsidian → **Open folder as vault** → `~/Documents/Claude Brain` → **Trust author and enable plugins**.
+4. Restart Claude Code and Roblox Studio so the new tools load. Studio asks once to let the plugin edit scripts: click **Allow**.
+5. Install the Rojo Studio plugin once: `rojo plugin install` (after Rokit has installed Rojo; `/new-game` does that).
+6. Make your first game. In Claude Code:
    ```
-   /new-project My App ~/Developer/my-app
+   /new-game my-first-game
    ```
-   Claude reads the repo, writes the project's folder note and code map, adds it to the index and offers to delete the example.
+   Claude copies the framework to `~/Developer/my-first-game`, installs its packages, adds the game to your brain, and asks three questions about its look.
 
 ## Daily loop
+1. **Open a chat in your game's folder.** Claude reads the brain and says in one line what it loaded. `/brain` = "what's next" across all your games.
+2. **Ask for one thing per chat**: a system, a bug, a screen, a model. Claude follows the matching workflow and stops at checkpoints to show you.
+3. **`/save`** after each chunk. New facts, traps and next steps go into the brain. Saving is manual on purpose, so you see what goes in.
+4. **`/brain-audit <game>`** every few weeks catches notes that went stale.
 
-1. **Start a chat.** Claude reads the brain on its own (that's in `CLAUDE.md`) and says in one line what it loaded. `/brain` gives you a quick "what's next" across all projects.
-2. **Work.** One task per chat. Claude follows the matching workflow and stops at checkpoints.
-3. **`/save`** after each chunk of work. Claude updates the notes and plans and gives you a one-line summary. Saving is manual on purpose: you see what goes in.
-4. Every few weeks, **`/brain-audit <project>`** catches notes that have gone stale.
+## Asking well
+- **Systems:** "Add a shop: 3 items, prices, purchases save." Claude finds where it belongs in the framework, shows a plan if it's big, builds it, playtests it through the bridge.
+- **Bugs:** paste the error. Claude reproduces it, fixes the smallest thing, and re-tests.
+- **UI:** "Make a shop screen." Claude mocks 2–3 directions as web previews first; you pick one; it builds that in Fusion 1:1.
+- **3D:** fill in the asset brief (`Art Direction/Asset Brief Template` in the vault) and attach 2–3 reference images. Blocky styles Claude builds in Blender itself; realistic characters/creatures you generate with an AI 3D tool from Claude's brief, and Claude does the clean-up, textures, rig and import.
 
-## The rules that make it work
-
-The full version is in `Playbook/Playbook.md`. The short one:
-
-- **Pointers, not dumps.** Notes say *where* something is and *when* to read it. Pasting code into notes makes them long, expensive and stale.
-- **Every folder has a folder note** with the same name (`My App/My App.md`). The `%% Waypoint %%` line inside it turns into an auto-generated list of the folder's notes.
-- **Unique note names.** Prefix with the project (`My App Gotchas`), because `[[links]]` break silently on duplicates.
-- **Gotchas are gold.** Every "that took an hour to figure out" becomes one line in the project's Gotchas note, so it never costs an hour again.
-- **Workflows improve themselves.** When Claude makes a mistake a checklist should have caught, `/save` adds that check to the workflow.
-
-## Making Roblox games
-
-`roblox-template/` is a ready-to-run game skeleton:
-- **Layout:** one server Script and one LocalScript, with every system as a module.
-- **Packages:** Janitor, Packet, ProfileStore, Fusion and Text+ wired in, with a small working example.
-- **Setup:** steps are in [roblox-template/README.md](roblox-template/README.md).
-- **Rules:** the vault's `Roblox/` notes explain them, so Claude follows the same layout in every game.
-
-## Make it yours
-
-- **Claude Rules** (`Playbook/Claude Rules.md`) is your global `CLAUDE.md`. Rule 1 ("partner, not a yes-man") makes Claude push back instead of agreeing with everything. Keep it, tune it, or add your own rules.
-- **Add workflows** for work you repeat (UI screens, blog posts, releases) from `_templates/Workflow.md`.
-- **Back up your vault.** It's your notes, not this repo. Make it its own private git repo, or use Obsidian Sync or iCloud.
-- **Optional plugins** worth a look later: [Dataview](https://github.com/blacksmithgu/obsidian-dataview) (query notes like a database), [Smart Connections](https://github.com/brianpetro/obsidian-smart-connections) (semantic search), [Excalidraw](https://github.com/zsviczian/obsidian-excalidraw-plugin) (diagrams). Start without them.
+## What's where
+| Path | |
+|---|---|
+| `vault/` | the brain's starting notes (copied to your vault once; yours after that) |
+| `vault/Roblox/` | framework rules, module kit, Studio bridge, 3D pipeline, gotchas |
+| `vault/Workflows/` | Feature, Bug Fix, Roblox Scripting, UI Screen, 3D Asset, Studio Safety |
+| `vault/Art Direction/` | Style Bible (one section per game) + asset brief template |
+| `roblox-template/` | the base framework ([its README](roblox-template/README.md)) |
+| `tools/3d/` | Blender build/export scripts + Substance job ([README](tools/3d/README.md)) |
+| `claude/commands/` | the slash commands |
 
 ## Updating
-
 ```bash
 cd ~/Developer/claude-brain-starter && git pull && ./install.sh --update
 ```
+Refreshes the commands and plugins; never touches your notes. If the starter's notes or workflows improved, ask Claude: *"compare my vault's Playbook, Roblox and Workflows notes with ~/Developer/claude-brain-starter/vault and merge anything new."*
 
-This refreshes the slash commands and plugins. It never touches your notes. If the starter's `Playbook` or `Workflows` change, ask Claude: *"compare my Playbook with the one in ~/Developer/claude-brain-starter/vault and merge anything new."*
+## Make it yours
+- **`Playbook/Claude Rules.md`** is your global `CLAUDE.md`. Rule 1 makes Claude push back instead of agreeing with everything. Tune it.
+- **Back up your vault**: it's your notes, not this repo. Make it a private git repo or use Obsidian Sync.
+- New kinds of work you repeat (VFX, sound, monetization) → new workflow from `_templates/Workflow.md`.

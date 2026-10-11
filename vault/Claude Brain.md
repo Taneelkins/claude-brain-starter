@@ -12,12 +12,13 @@
 - [[Playbook]]: how this brain works (Structure Law, session habits, saving). **Read at session start.**
 - [[Plans]]: the backlog of unfinished work across every project. **"What's next" starts here.**
 - [[Workflows]]: how each type of work gets done (stages, checkpoints, audits). **Read the matching one for every task.**
-- [[Roblox]]: optional pack for Roblox games (framework, module kit, gotchas). Delete it if you don't make Roblox games.
+- [[Roblox]]: making Roblox games with Claude: framework, modules, Studio bridge, 3D pipeline, gotchas.
+- [[Art Direction]]: each game's look (Style Bible) and the asset brief template.
 
 ## 📁 Projects
 | Project | Where the code lives | What it is |
 |---|---|---|
-| [[Example Project]] | `~/Developer/example` | Delete me once you've added a real project with `/new-project` |
+| [[Example Game]] | `~/Developer/example-game` | Delete me once `/new-game` has made a real one |
 
 ---
 

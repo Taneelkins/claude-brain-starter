@@ -1,3 +1,4 @@
+-- the only LocalScript. same pattern as the server: require every controller, then Start()
 local Modules = {}
 
 for _, Module in script.Parent.Controllers:GetChildren() do

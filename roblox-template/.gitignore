@@ -1,6 +1,8 @@
 Packages/
 ServerPackages/
+src/shared/Vendor/Packet/
 sourcemap.json
 *.rbxl
 *.rbxlx
 *.lock
+.DS_Store

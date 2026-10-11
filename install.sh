@@ -6,6 +6,7 @@
 #   ./install.sh                         # vault at ~/Documents/Claude Brain
 #   VAULT=~/Notes/Brain ./install.sh     # somewhere else
 #   NAME=Sam ./install.sh                # skip the name prompt
+#   ROBLOX=yes ./install.sh              # also set up the Roblox tools without asking (ROBLOX=no to skip)
 set -euo pipefail
 
 Repo="$(cd "$(dirname "$0")" && pwd)"
@@ -21,6 +22,7 @@ Plugins=(
 )
 
 say() { printf '\033[1m%s\033[0m\n' "$*"; }
+warn() { printf '\033[33m%s\033[0m\n' "$*"; }
 fill() { NAME="$Name" VAULT="$Vault" perl -pe 's/\{\{NAME\}\}/$ENV{NAME}/g; s/\{\{VAULT\}\}/$ENV{VAULT}/g'; }
 
 Name="${NAME:-}"
@@ -64,9 +66,9 @@ for Src in "$Repo"/claude/commands/*.md; do
     mv "$Dest" "$Dest.bak"
     say "Backed up your existing $(basename "$Dest") to $(basename "$Dest").bak"
   fi
-  { fill < "$Src"; printf '\n%s\n' "$Marker"; } > "$Dest"
+  { fill < "$Src" | REPO="$Repo" perl -pe 's/\{\{REPO\}\}/$ENV{REPO}/g'; printf '\n%s\n' "$Marker"; } > "$Dest"
 done
-say "Installed commands: /brain /save /brain-audit /new-project"
+say "Installed commands: /brain /save /brain-audit /new-project /new-game"
 
 # 4. Global rules: ~/.claude/CLAUDE.md -> the vault's Claude Rules note
 Rules="$Vault/Playbook/Claude Rules.md"
@@ -81,10 +83,55 @@ else
   say "Linked ~/.claude/CLAUDE.md -> Claude Rules.md"
 fi
 
+# 5. Roblox tools: Studio bridge (Claude <-> Studio) + Blender MCP (Claude <-> Blender)
+Roblox="${ROBLOX:-ask}"
+if [ "$Roblox" = ask ]; then
+  read -rp "Set up the Roblox tools too (Studio bridge + Blender MCP)? [Y/n] " Answer || true
+  case "${Answer:-y}" in [Nn]*) Roblox=no ;; *) Roblox=yes ;; esac
+fi
+if [ "$Roblox" = yes ]; then
+  Bridge="$HOME/claude-studio-bridge"   # never under ~/Documents: macOS blocks the background daemon there
+  if ! command -v node >/dev/null; then
+    warn "Node.js 22+ is needed for the Studio bridge: https://nodejs.org (then re-run this script)"
+  else
+    if [ -d "$Bridge/.git" ]; then
+      git -C "$Bridge" pull --ff-only -q || warn "Couldn't update $Bridge (local changes?), using it as is"
+    else
+      say "Cloning the Studio bridge to $Bridge"
+      git clone -q https://github.com/Taneelkins/claude-studio-bridge "$Bridge"
+    fi
+    say "Building the Studio bridge"
+    (cd "$Bridge/bridge" && npm install --silent && npm run build --silent)
+    if [ "$(uname)" = Darwin ]; then
+      mkdir -p "$HOME/Documents/Roblox/Plugins"
+      cp "$Bridge/release/TaruTools.rbxm" "$HOME/Documents/Roblox/Plugins/"
+      node "$Bridge/scripts/register-mcp.mjs"
+      "$Bridge/scripts/install-daemon.sh" || warn "Daemon install failed; the bridge still works while a Claude chat is open"
+    else
+      warn "Studio only runs on Mac/Windows. On Windows run: powershell -ExecutionPolicy Bypass -File $Bridge/scripts/install.ps1"
+    fi
+  fi
+
+  if ! command -v uvx >/dev/null; then
+    warn "Blender MCP needs uv: brew install uv  (or https://docs.astral.sh/uv/), then re-run this script"
+  elif ! command -v claude >/dev/null; then
+    warn "Claude Code CLI not found, so the Blender MCP wasn't registered"
+  else
+    if ! claude mcp get blender >/dev/null 2>&1; then
+      claude mcp add blender -s user -e DISABLE_TELEMETRY=true -- uvx mcp-for-blender@2.1.9
+    fi
+    uvx mcp-for-blender@2.1.9 install-addon || warn "Couldn't install the Blender add-on (is Blender installed?). Re-run later: uvx mcp-for-blender@2.1.9 install-addon"
+    say "Blender MCP ready"
+  fi
+
+  command -v rokit >/dev/null || warn "For new games, install Rokit: https://github.com/rojo-rbx/rokit"
+fi
+
 cat <<EOF
 
 Done. Next:
   1. Open Obsidian -> "Open folder as vault" -> $Vault
   2. When it asks, click "Trust author and enable plugins".
-  3. Start Claude Code anywhere and type:  /new-project <your project>
+  3. Restart Claude Code (and Roblox Studio) so the new tools load.
+  4. In Claude Code:  /new-game <name>   (or /new-project for anything that isn't a Roblox game)
 EOF

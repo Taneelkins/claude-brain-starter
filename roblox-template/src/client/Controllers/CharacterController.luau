@@ -1,44 +1,44 @@
+-- this player's character lifetime. connect to CharacterAdded and put cleanup in the janitor
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local UserInputService = game:GetService("UserInputService")
 
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
+local Signal = require(ReplicatedStorage.Packages.Signal)
 
 local Player = Players.LocalPlayer
 
-local WalkSpeed = 16
-local SprintSpeed = 24
-
 local CharacterController = {}
+CharacterController.CharacterAdded = Signal.new()
+
+local Current
+
+function CharacterController.Get()
+	return Player.Character
+end
 
 local function OnCharacterAdded(Character: Model)
-	local CharacterJanitor = Janitor.new()
-	local Humanoid = Character:WaitForChild("Humanoid") :: Humanoid
+	if Current then
+		Current:Destroy()
+	end
 
-	CharacterJanitor:Add(UserInputService.InputBegan:Connect(function(Input, Processed)
-		if not Processed and Input.KeyCode == Enum.KeyCode.LeftShift then
-			Humanoid.WalkSpeed = SprintSpeed
-		end
-	end), "Disconnect")
+	Current = Janitor.new()
+	Current:LinkToInstance(Character)
 
-	CharacterJanitor:Add(UserInputService.InputEnded:Connect(function(Input)
-		if Input.KeyCode == Enum.KeyCode.LeftShift then
-			Humanoid.WalkSpeed = WalkSpeed
-		end
-	end), "Disconnect")
+	local Humanoid = Character:WaitForChild("Humanoid", 10)
+	if Humanoid then
+		Current:Add(Humanoid.Died:Connect(function()
+			Current:Cleanup()
+		end), "Disconnect")
+	end
 
-	CharacterJanitor:Add(Humanoid.Died:Connect(function()
-		CharacterJanitor:Cleanup()
-	end), "Disconnect")
-
-	CharacterJanitor:LinkToInstance(Character)
+	CharacterController.CharacterAdded:Fire(Character, Current)
 end
 
 function CharacterController.Start()
-	if Player.Character then
-		task.spawn(OnCharacterAdded, Player.Character)
-	end
 	Player.CharacterAdded:Connect(OnCharacterAdded)
+	if Player.Character then
+		OnCharacterAdded(Player.Character)
+	end
 end
 
 return CharacterController

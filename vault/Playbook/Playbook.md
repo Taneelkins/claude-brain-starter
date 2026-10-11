@@ -44,7 +44,8 @@ Claude flags the switch; you change it in the model picker.
 - **`/brain`**: where am I? Top "what's next" per project, then asks what to work on.
 - **`/save`**: write this session's facts, gotchas and plan changes back into the brain. **The brain does not auto-update; this is how knowledge gets in.**
 - **`/brain-audit <project>`**: check a project's notes against reality. Flags stale facts, dead paths and broken links; stamps `verified:` dates.
-- **`/new-project <name>`**: scaffold a project folder, its folder note, Gotchas and Plans, and add it to the root table.
+- **`/new-game <name>`**: copy the Roblox framework into `~/Developer/<name>`, install everything, and add the game to the brain.
+- **`/new-project <name>`**: same brain setup for anything that isn't a Roblox game.
 
 ## 🧭 "What's next"
 Read [[Plans]] first, then the project's plans note. Each entry's **Read for scope** pointers say exactly what to load before acting.

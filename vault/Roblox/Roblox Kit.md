@@ -2,27 +2,28 @@
 
 # 🧰 Roblox Kit
 
-> The modules every game starts with, and the one rule for each. Versions are pinned in `roblox-template/wally.toml`. Back to [[Roblox]]
+> Every module the framework uses and the one rule for each. Versions pinned in `roblox-template/wally.toml` and `rokit.toml`. Back to [[Roblox]]
 
 ## Tools
 | Tool | Job | Get it |
 |---|---|---|
-| Rokit | installs the right Rojo/Wally versions per project (`rokit install`) | [rojo-rbx/rokit](https://github.com/rojo-rbx/rokit) |
-| Rojo | syncs `src/` into Studio (`rojo serve` + the Studio plugin) | [rojo.space](https://rojo.space) |
-| Wally | package manager (`wally install`) | [wally.run](https://wally.run) |
+| Rokit | installs the project's tool versions (`rokit install`) | [rojo-rbx/rokit](https://github.com/rojo-rbx/rokit) |
+| Rojo | syncs `src/` into Studio (`rojo serve` + Studio plugin) | [rojo.space](https://rojo.space) |
+| Wally | packages (`wally install`) | [wally.run](https://wally.run) |
+| Selene / StyLua | lint / format (`selene src`, `stylua src`) | in `rokit.toml` |
 
 ## Modules
-| Module | Job | Rule | Get it |
-|---|---|---|---|
-| **Janitor** | cleans up connections, instances, threads when something ends | one Janitor per lifetime; `:Cleanup()` on end or `:LinkToInstance()` | Wally · [howmanysmall/Janitor](https://github.com/howmanysmall/Janitor) |
-| **Packet** | fast, typed networking over one RemoteEvent | define every packet in `Shared/Network.luau` with exact types (`NumberU8`, `Vector3F24`…) | `.rbxm` · [DevForum post](https://devforum.roblox.com/t/packet-networking-library/3573907) |
-| **ProfileStore** | player data with session locking (no dupes, no lost saves) | only `DataService` uses it; always `Reconcile()` so new template fields appear | Wally (server) · [MadStudioRoblox/ProfileStore](https://github.com/MadStudioRoblox/ProfileStore) |
-| **Fusion** | reactive UI in code: change a Value, the UI updates | one `scope` per screen; `scope:doCleanup()` when it closes | Wally · [dphfox/Fusion](https://github.com/dphfox/Fusion) |
-| **Text+** | text with custom fonts and per-letter control | use for designed text (titles, damage numbers), plain TextLabels elsewhere | `.rbxm` · [AlexanderLindholt/TextPlus](https://github.com/AlexanderLindholt/TextPlus) |
-| **Signal** | custom events between modules (`DataService.ProfileLoaded`) | expose signals, don't poll | Wally · [Sleitnick/RbxUtil](https://github.com/Sleitnick/RbxUtil) |
-| **Promise** | async work that can fail or time out | for chains of yields; plain `task.spawn` for fire-and-forget | Wally · [evaera/roblox-lua-promise](https://github.com/evaera/roblox-lua-promise) |
+| Module | Job | Rule |
+|---|---|---|
+| **ProfileStore** ([repo](https://github.com/MadStudioRoblox/ProfileStore)) | saves player data with session locking (no dupes, no lost saves) | only `DataService` touches it; `Reconcile()` on load |
+| **Replion** ([repo](https://github.com/yTrev/Replion)) | live copy of server data on the client | change data only through the replion; its tables are **immutable** (each change makes a new table) |
+| **Packet** ([DevForum](https://devforum.roblox.com/t/packet-networking-library/3573907)) | fast typed networking on one RemoteEvent | all packets in `Network.luau`, smallest type that fits; `:Response()` for request/answer |
+| **Janitor** ([repo](https://github.com/howmanysmall/Janitor)) | cleanup | one per lifetime; `:Add(x, "Disconnect")`, `:LinkToInstance(model)` |
+| **Fusion 0.3** ([repo](https://github.com/dphfox/Fusion)) | reactive UI: change a Value, the UI updates | one scope per screen (`UIController.Mount` does it); `Scope:Computed(function(Use) …)` |
+| **Text+** ([repo](https://github.com/AlexanderLindholt/TextPlus)) | text with custom fonts, stroke, spacing, per-letter control | use via `UI/Components/Text`; the vendored copy has a UIScale fix (see Gotchas) |
+| **Signal** ([RbxUtil](https://github.com/Sleitnick/RbxUtil)) | events between modules | expose signals, don't poll |
+| **Promise** ([repo](https://github.com/evaera/roblox-lua-promise)) | async chains that can fail/time out | `task.spawn` for fire-and-forget |
+| **Cmdr** ([repo](https://github.com/evaera/Cmdr)) | F2 admin/debug console | permissions via the `BeforeRun` hook in `CommandService` |
 
-## Add when needed
-- **Replion** ([yTrev/Replion](https://github.com/yTrev/Replion)): replicates server state tables to clients. Use it when many systems need player data on the client, instead of a packet per field.
-- **Cmdr** ([evaera/Cmdr](https://github.com/evaera/Cmdr)): admin/debug command console.
-- **Vide** ([centau/vide](https://github.com/centau/vide)): a lighter alternative to Fusion. Pick one per game, never both.
+## Custom fonts (Text+)
+Any `.ttf` can become a Text+ font: render the glyphs to an atlas PNG, upload it, and write the data module Text+ expects (a ModuleScript tagged `Fonts`). Claude can do the whole thing with Python (PIL) + the Studio bridge's `upload_asset`. Text+ docs: `documentation/custom-fonts/` in its repo.
