@@ -12,6 +12,7 @@
 - [[Playbook]]: how this brain works (Structure Law, session habits, saving). **Read at session start.**
 - [[Plans]]: the backlog of unfinished work across every project. **"What's next" starts here.**
 - [[Workflows]]: how each type of work gets done (stages, checkpoints, audits). **Read the matching one for every task.**
+- [[Roblox]]: optional pack for Roblox games (framework, module kit, gotchas). Delete it if you don't make Roblox games.
 
 ## 📁 Projects
 | Project | Where the code lives | What it is |

@@ -22,6 +22,7 @@ new chat ─▶ Claude reads: root index → Playbook → your project's note �
 | `Workflows/` | Repeatable contracts for kinds of work (Feature, Bug Fix): inputs, steps, checkpoints, a pass/fail audit. |
 | `Example Project/` | A filled-in sample so you can see the shape. Delete it once you have a real one. |
 | `_templates/` | Templates for new projects, plans, gotchas and workflows. |
+| `Roblox/` *(optional)* | Framework guide, module kit and gotchas for Roblox games, plus a Roblox Scripting workflow. Delete it if you don't make Roblox games. |
 | Slash commands | `/brain`, `/save`, `/brain-audit`, `/new-project` |
 | Obsidian plugins | [Waypoint](https://github.com/IdreesInc/Waypoint), [Folder Notes](https://github.com/LostPaul/obsidian-folder-notes), [Omnisearch](https://github.com/scambier/obsidian-omnisearch), [Tag Wrangler](https://github.com/pjeby/tag-wrangler), already configured |
 
@@ -64,6 +65,14 @@ The full version is in `Playbook/Playbook.md`. The short one:
 - **Unique note names.** Prefix with the project (`My App Gotchas`), because `[[links]]` break silently on duplicates.
 - **Gotchas are gold.** Every "that took an hour to figure out" becomes one line in the project's Gotchas note, so it never costs an hour again.
 - **Workflows improve themselves.** When Claude makes a mistake a checklist should have caught, `/save` adds that check to the workflow.
+
+## Making Roblox games
+
+`roblox-template/` is a ready-to-run game skeleton:
+- **Layout:** one server Script and one LocalScript, with every system as a module.
+- **Packages:** Janitor, Packet, ProfileStore, Fusion and Text+ wired in, with a small working example.
+- **Setup:** steps are in [roblox-template/README.md](roblox-template/README.md).
+- **Rules:** the vault's `Roblox/` notes explain them, so Claude follows the same layout in every game.
 
 ## Make it yours
 

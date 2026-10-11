@@ -21,6 +21,7 @@
 |---|---|
 | [[Feature]] | Loop |
 | [[Bug Fix]] | Loop |
+| [[Roblox Scripting]] | Loop |
 
 Add your own from `_templates/Workflow.md` when a kind of task keeps coming up (UI screen, blog post, release…).
 
