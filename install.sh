@@ -83,7 +83,7 @@ else
   say "Linked ~/.claude/CLAUDE.md -> Claude Rules.md"
 fi
 
-# 5. Roblox tools: Studio bridge (Claude <-> Studio) + Blender MCP (Claude <-> Blender)
+# 5. Roblox tools: Roblox's built-in Studio MCP (main Studio tool), upload bridge (uploads + Blender export), Blender MCP
 Roblox="${ROBLOX:-ask}"
 if [ "$Roblox" = ask ]; then
   read -rp "Set up the Roblox tools too (Studio bridge + Blender MCP)? [Y/n] " Answer || true
@@ -110,6 +110,14 @@ if [ "$Roblox" = yes ]; then
     else
       warn "Studio only runs on Mac/Windows. On Windows run: powershell -ExecutionPolicy Bypass -File $Bridge/scripts/install.ps1"
     fi
+  fi
+
+  StudioMcp="/Applications/RobloxStudio.app/Contents/MacOS/StudioMCP"
+  if [ -x "$StudioMcp" ] && command -v claude >/dev/null; then
+    claude mcp get Roblox_Studio >/dev/null 2>&1 || claude mcp add Roblox_Studio -s user -- "$StudioMcp"
+    say "Studio MCP registered. In Studio: Assistant -> ... -> Settings -> MCP Servers -> enable"
+  else
+    warn "Register Roblox's Studio MCP yourself: claude mcp add Roblox_Studio -s user -- <path to StudioMCP>, then enable it in Studio (Assistant -> Settings -> MCP Servers)"
   fi
 
   if ! command -v uvx >/dev/null; then

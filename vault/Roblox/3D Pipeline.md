@@ -9,7 +9,7 @@
 |---|---|---|
 | **Blender + MCP** | builds and edits the open scene live, looks at the viewport, renders | `install.sh` registers the `blender` MCP server and installs the add-on. In Blender, the add-on's server starts with Blender (if not: N panel → MCP for Blender → Start) |
 | **Blender headless** | runs saved build/export scripts with no window | `Blender --background --python script.py` |
-| **Studio bridge** | `export_to_blender` (Studio → Blender 1:1), `upload_asset`, `insert_asset` | [[Studio Bridge]] |
+| **Studio bridge + MCP** | bridge `export_to_blender` (Studio → Blender 1:1) and `upload_asset`, then built-in `insert_asset` | [[Studio Bridge]] |
 | **AI 3D generation** (Claude Design 3D, Meshy) | you generate from Claude's brief + refs; Claude cleans up, textures, rigs, imports | your accounts |
 | **Substance 3D Painter** (optional) | PBR texturing driven by a one-shot startup script | `tools/3d/substance_job.py` |
 

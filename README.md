@@ -8,7 +8,7 @@ Everything you need to make Roblox games with [Claude Code](https://claude.com/c
 | | What it is | Why it matters |
 |---|---|---|
 | **The Brain** | An Obsidian vault Claude reads at the start of every chat and writes back to with `/save` | Claude forgets everything between chats. The brain is its memory: where code lives, what broke last time, what's next |
-| **Studio bridge** | Claude ↔ Roblox Studio: reads/edits the place, runs real playtests, uploads assets | Claude can test its own work instead of you copy-pasting errors |
+| **Studio MCP** | Roblox's built-in MCP: Claude reads/edits the place, runs real playtests, presses keys, takes screenshots. Plus a small bridge for local file uploads and Studio → Blender export | Claude can test its own work instead of you copy-pasting errors |
 | **Base framework** | A Roblox game skeleton with data saving, networking, UI, cleanup and an admin console already wired | You start on gameplay, not plumbing, and Claude always knows where code goes |
 | **3D pipeline** | Blender MCP (Claude drives Blender), Studio → Blender export, Substance automation, upload | Models from brief to in-game, step by step, with checkpoints |
 | **Workflows** | Step-by-step contracts for scripting, bug fixes, UI screens, 3D assets | Same quality every time; each one has a checklist Claude runs before showing you anything |
@@ -35,11 +35,13 @@ Everything you need to make Roblox games with [Claude Code](https://claude.com/c
    - **Obsidian:** downloads the 4 plugins it uses.
    - **Claude:** installs `/brain`, `/save`, `/brain-audit`, `/new-project` and `/new-game`, and links `~/.claude/CLAUDE.md` to the vault's rules. An existing `CLAUDE.md` is never overwritten.
    - **Roblox tools:**
-     - Clones and builds the [Studio bridge](https://github.com/Taneelkins/claude-studio-bridge) into `~/claude-studio-bridge`, installs its Studio plugin and its always-on daemon, and registers it with Claude.
+     - Clones and builds the [Studio bridge](https://github.com/Taneelkins/claude-studio-bridge) into `~/claude-studio-bridge`, installs its Studio plugin and its always-on daemon, and registers it with Claude. It only handles uploads and Blender export.
+     - On Mac, registers Roblox's built-in Studio MCP (the main Studio tool).
      - Registers the Blender MCP server and installs its Blender add-on.
 3. Open Obsidian → **Open folder as vault** → `~/Documents/Claude Brain` → **Trust author and enable plugins**.
-4. Restart Claude Code and Roblox Studio so the new tools load. Studio asks once to let the plugin edit scripts: click **Allow**.
-5. Install the Rojo Studio plugin once: `rojo plugin install` (after Rokit has installed Rojo; `/new-game` does that).
+4. In Studio: **Assistant → ⋯ → Settings → MCP Servers** → enable. On Windows also run `claude mcp add Roblox_Studio -s user -- "<Studio install folder>\StudioMCP.exe"`.
+5. Restart Claude Code and Roblox Studio so the new tools load. If Studio asks to let a plugin or the MCP edit scripts, click **Allow**.
+6. Install the Rojo Studio plugin once: `rojo plugin install` (after Rokit has installed Rojo; `/new-game` does that).
 6. Make your first game. In Claude Code:
    ```
    /new-game my-first-game
@@ -53,7 +55,7 @@ Everything you need to make Roblox games with [Claude Code](https://claude.com/c
 4. **`/brain-audit <game>`** every few weeks catches notes that went stale.
 
 ## Asking well
-- **Systems:** "Add a shop: 3 items, prices, purchases save." Claude finds where it belongs in the framework, shows a plan if it's big, builds it, playtests it through the bridge.
+- **Systems:** "Add a shop: 3 items, prices, purchases save." Claude finds where it belongs in the framework, shows a plan if it's big, builds it, playtests it through Studio's MCP.
 - **Bugs:** paste the error. Claude reproduces it, fixes the smallest thing, and re-tests.
 - **UI:** "Make a shop screen." Claude mocks 2–3 directions over a real game frame; you pick one; it measures the mock and rebuilds it in Fusion 1:1. The taste rules are in `vault/Roblox/UI Craft.md`; see `examples/ui-hud/`.
 - **3D:** fill in the asset brief (`Art Direction/Asset Brief Template` in the vault) and attach 2–3 reference images. Blocky styles Claude builds in Blender itself; realistic characters/creatures you generate with an AI 3D tool from Claude's brief, and Claude does the clean-up, textures, rig and import.
@@ -62,7 +64,7 @@ Everything you need to make Roblox games with [Claude Code](https://claude.com/c
 | Path | |
 |---|---|
 | `vault/` | the brain's starting notes (copied to your vault once; yours after that) |
-| `vault/Roblox/` | framework rules, module kit, Studio bridge, 3D pipeline, gotchas |
+| `vault/Roblox/` | framework rules, module kit, Studio MCP + bridge, 3D pipeline, gotchas |
 | `vault/Workflows/` | Feature, Bug Fix, Roblox Scripting, UI Screen, 3D Asset, Studio Safety |
 | `vault/Art Direction/` | Style Bible (one section per game) + asset brief template |
 | `roblox-template/` | the base framework ([its README](roblox-template/README.md)) |

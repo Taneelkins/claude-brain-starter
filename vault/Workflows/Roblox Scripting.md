@@ -18,7 +18,7 @@
 2. **Plan.** List the module(s), any new packets for `Network.luau` with their exact types, any new data fields for the `DataService` template.
    - **Checkpoint** if it adds a new Service/Controller, changes saved data, or changes existing gameplay.
 3. **Build** on disk (never in Studio's script editor).
-4. **Verify** with `run_in_play_mode`: call the service directly and print results; for client behaviour use a `ZZ_` probe (see [[Studio Bridge]]). Server and client logs both clean. Say what wasn't tested.
+4. **Verify** in a playtest (`start_stop_play`): call the service through a temporary `ZZ_` Script and print results; check client behaviour with `execute_luau` on Client plus key input (see [[Studio Bridge]]). Server and client logs both clean. Say what wasn't tested.
 5. **Close:** commit. Nudge `/save`.
 
 ## Audit
