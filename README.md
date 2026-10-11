@@ -1,5 +1,8 @@
 # 🧠 Roblox Dev with Claude: Starter Kit
 
+### 📖 [Read the full guide →](https://claude.ai/artifact/3bpvaYyZkPqS3uQGohvuqP)
+Setup, how everything works, worked examples, playable UI previews from real games (Verdict and Bleach), the 3D pipeline, and how to prompt, all on one page.
+
 Everything you need to make Roblox games with [Claude Code](https://claude.com/claude-code) as your dev partner. One install gets you:
 
 | | What it is | Why it matters |
@@ -12,6 +15,8 @@ Everything you need to make Roblox games with [Claude Code](https://claude.com/c
 | **Worked examples** | A 3D lantern and a HUD taken through every stage, mistakes included ([examples/](examples/)) | Shows the quality bar instead of describing it |
 
 ## Setup
+
+**Easiest:** clone the repo, open Claude Code inside it and say *"set this up for me"*. The repo's `CLAUDE.md` tells Claude what everything is, how to install it and how to fix common problems.
 
 **You need:**
 - [Obsidian](https://obsidian.md/download), [Claude Code](https://docs.claude.com/en/docs/claude-code/overview), git and [Node.js 22+](https://nodejs.org).

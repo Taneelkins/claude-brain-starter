@@ -9,6 +9,7 @@
 ---
 
 ## 🌐 Global
+- **Illustrated guide** (setup, worked examples, playable previews, how to prompt): https://claude.ai/artifact/3bpvaYyZkPqS3uQGohvuqP
 - [[Playbook]]: how this brain works (Structure Law, session habits, saving). **Read at session start.**
 - [[Plans]]: the backlog of unfinished work across every project. **"What's next" starts here.**
 - [[Workflows]]: how each type of work gets done (stages, checkpoints, audits). **Read the matching one for every task.**
