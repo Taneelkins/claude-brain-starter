@@ -1,0 +1,18 @@
+screenshot -> /Users/taru/Developer/claude-brain-starter/examples/ui-hud/shots/A.png
+Plaque         Position = UDim2.fromOffset(48, 40)   Size = UDim2.fromOffset(340, 104)
+               fill Color3.fromRGB(21, 19, 15)  corner 6px
+               stroke 2px rgb(158, 107, 41)
+Label          Position = UDim2.fromOffset(72, 58)   Size = UDim2.fromOffset(200, 20)
+               "COINS"  Oswald 600  16px  spacing 4px  Color3.fromRGB(201, 154, 82)
+Coins          Position = UDim2.fromOffset(70, 78)   Size = UDim2.fromOffset(300, 56)
+               "1,240"  Merriweather 900  46px  spacing normal  Color3.fromRGB(255, 217, 154)
+CoinIcon       Position = UDim2.fromOffset(330, 66)   Size = UDim2.fromOffset(34, 34)
+               fill Color3.fromRGB(224, 160, 58)  corner 50%
+               stroke 3px rgb(122, 78, 28)
+Daily          Position = UDim2.fromOffset(48, 160)   Size = UDim2.fromOffset(340, 64)
+               fill Color3.fromRGB(158, 107, 41)  corner 6px
+               stroke 2px rgb(214, 164, 90)
+DailyText      Position = UDim2.fromOffset(48, 160)   Size = UDim2.fromOffset(340, 64)
+               "DAILY REWARD"  Oswald 600  24px  spacing 5px  Color3.fromRGB(26, 18, 10)
+Status         Position = UDim2.fromOffset(52, 238)   Size = UDim2.fromOffset(420, 32)
+               "+100 coins"  Merriweather 700  22px  spacing normal  Color3.fromRGB(242, 201, 138)

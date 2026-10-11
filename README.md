@@ -9,6 +9,7 @@ Everything you need to make Roblox games with [Claude Code](https://claude.com/c
 | **Base framework** | A Roblox game skeleton with data saving, networking, UI, cleanup and an admin console already wired | You start on gameplay, not plumbing, and Claude always knows where code goes |
 | **3D pipeline** | Blender MCP (Claude drives Blender), Studio → Blender export, Substance automation, upload | Models from brief to in-game, step by step, with checkpoints |
 | **Workflows** | Step-by-step contracts for scripting, bug fixes, UI screens, 3D assets | Same quality every time; each one has a checklist Claude runs before showing you anything |
+| **Worked examples** | A 3D lantern and a HUD taken through every stage, mistakes included ([examples/](examples/)) | Shows the quality bar instead of describing it |
 
 ## Setup
 
@@ -49,7 +50,7 @@ Everything you need to make Roblox games with [Claude Code](https://claude.com/c
 ## Asking well
 - **Systems:** "Add a shop: 3 items, prices, purchases save." Claude finds where it belongs in the framework, shows a plan if it's big, builds it, playtests it through the bridge.
 - **Bugs:** paste the error. Claude reproduces it, fixes the smallest thing, and re-tests.
-- **UI:** "Make a shop screen." Claude mocks 2–3 directions as web previews first; you pick one; it builds that in Fusion 1:1.
+- **UI:** "Make a shop screen." Claude mocks 2–3 directions over a real game frame; you pick one; it measures the mock and rebuilds it in Fusion 1:1. The taste rules are in `vault/Roblox/UI Craft.md`; see `examples/ui-hud/`.
 - **3D:** fill in the asset brief (`Art Direction/Asset Brief Template` in the vault) and attach 2–3 reference images. Blocky styles Claude builds in Blender itself; realistic characters/creatures you generate with an AI 3D tool from Claude's brief, and Claude does the clean-up, textures, rig and import.
 
 ## What's where
@@ -61,6 +62,8 @@ Everything you need to make Roblox games with [Claude Code](https://claude.com/c
 | `vault/Art Direction/` | Style Bible (one section per game) + asset brief template |
 | `roblox-template/` | the base framework ([its README](roblox-template/README.md)) |
 | `tools/3d/` | Blender build/export scripts + Substance job ([README](tools/3d/README.md)) |
+| `tools/ui/` | `measure.mjs`: turns a 1920×1080 HTML mock into exact Roblox offsets, fonts and colours |
+| `examples/` | the worked examples ([walkthrough](examples/index.html), [README](examples/README.md)) |
 | `claude/commands/` | the slash commands |
 
 ## Updating

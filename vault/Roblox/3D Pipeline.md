@@ -2,7 +2,7 @@
 
 # 🧊 3D Pipeline
 
-> How models get made and into the game with Claude. The step-by-step contract is the [[3D Asset]] workflow; this note is the tools and the hard-won rules. Back to [[Roblox]]
+> How models get made and into the game with Claude. The step-by-step contract is the [[3D Asset]] workflow; this note is the tools and the hard-won rules. Worked example: `examples/3d-lantern/`. Back to [[Roblox]]
 
 ## Tools
 | Tool | What Claude does with it | Setup |
@@ -26,7 +26,7 @@
 - **R15 character:** arm ≈ 1×1 stud cross-section, hand ≈ 0.3 stud. Hands are **closed fists** (no finger rig); no separate finger pieces on gear.
 - **One MeshPart = one SurfaceAppearance**, so body, eyes, teeth share one UV atlas. Glow = emissive mask in the atlas (EmissiveStrength/Tint).
 - Textures upload as **PNG** (Open Cloud rejects GLBs with JPEG textures). New uploads show untextured for ~1 min (moderation).
-- Judge colours **in the game's lighting**, not Blender's. Each place's lighting shifts tones.
+- Judge colours **in the game's lighting**, not Blender's. Each place's lighting shifts tones. In Blender renders use the **Standard** view transform: AgX/Filmic wash bright emissives out to cream.
 
 ## Rules that came from mistakes
 - **Every stage has a build script** (`build_<asset>.py`) next to its `.blend`: it rebuilds the model from scratch. Variants and skins come from the script, never from hand-edited copies.

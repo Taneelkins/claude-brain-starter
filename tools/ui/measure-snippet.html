@@ -1,0 +1,30 @@
+<!-- Paste at the end of a 1920x1080 UI mock. Tag elements with data-rbx="Name".
+     tools/ui/measure.py reads the JSON this writes and turns it into Roblox numbers. -->
+<script>
+(function () {
+  function measure() {
+    var canvas = document.querySelector("[data-canvas]") || document.body;
+    var box = canvas.getBoundingClientRect();
+    var scale = box.width / 1920 || 1;
+    var out = [];
+    document.querySelectorAll("[data-rbx]").forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      var cs = getComputedStyle(el);
+      out.push({
+        name: el.getAttribute("data-rbx"),
+        x: Math.round((r.left - box.left) / scale), y: Math.round((r.top - box.top) / scale),
+        w: Math.round(r.width / scale), h: Math.round(r.height / scale),
+        text: el.children.length ? null : el.textContent.trim(),
+        font: cs.fontFamily.split(",")[0].replace(/["']/g, "").trim(), weight: cs.fontWeight,
+        size: Math.round(parseFloat(cs.fontSize)), spacing: cs.letterSpacing,
+        color: cs.color, background: cs.backgroundColor, radius: cs.borderTopLeftRadius,
+        stroke: cs.borderTopWidth !== "0px" ? cs.borderTopWidth + " " + cs.borderTopColor : null,
+        opacity: cs.opacity
+      });
+    });
+    var tag = document.getElementById("rbx-rects") || document.body.appendChild(Object.assign(document.createElement("script"), { id: "rbx-rects", type: "application/json" }));
+    tag.textContent = JSON.stringify(out);
+  }
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(function () { setTimeout(measure, 600); });
+})();
+</script>

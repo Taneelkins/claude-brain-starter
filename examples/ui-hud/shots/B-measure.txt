@@ -1,0 +1,14 @@
+screenshot -> /Users/taru/Developer/claude-brain-starter/examples/ui-hud/shots/B.png
+Tag            Position = UDim2.fromOffset(60, 43)   Size = UDim2.fromOffset(177, 152)
+               fill Color3.fromRGB(233, 220, 191)  corner 10px
+Coins          Position = UDim2.fromOffset(60, 84)   Size = UDim2.fromOffset(176, 60)
+               "1,240"  Kalam 700  48px  spacing normal  Color3.fromRGB(59, 42, 24)
+Label          Position = UDim2.fromOffset(60, 142)   Size = UDim2.fromOffset(176, 30)
+               "coins"  Patrick Hand 400  24px  spacing normal  Color3.fromRGB(122, 92, 56)
+Daily          Position = UDim2.fromOffset(262, 96)   Size = UDim2.fromOffset(240, 60)
+               fill Color3.fromRGB(233, 220, 191)  corner 30px
+               stroke 3px rgb(122, 92, 56)
+DailyText      Position = UDim2.fromOffset(262, 96)   Size = UDim2.fromOffset(240, 60)
+               "claim daily"  Patrick Hand 400  28px  spacing normal  Color3.fromRGB(59, 42, 24)
+Status         Position = UDim2.fromOffset(266, 170)   Size = UDim2.fromOffset(360, 34)
+               "+100 coins!"  Patrick Hand 400  26px  spacing normal  Color3.fromRGB(233, 220, 191)

@@ -1,0 +1,15 @@
+screenshot -> /Users/taru/Developer/claude-brain-starter/examples/ui-hud/shots/C.png
+Coins          Position = UDim2.fromOffset(64, 884)   Size = UDim2.fromOffset(520, 96)
+               "1,240"  Josefin Sans 300  88px  spacing 2px  Color3.fromRGB(255, 241, 220)
+Rule           Position = UDim2.fromOffset(66, 984)   Size = UDim2.fromOffset(300, 2)
+               fill Color3.fromRGB(255, 179, 92)  corner 0px
+Label          Position = UDim2.fromOffset(66, 996)   Size = UDim2.fromOffset(300, 22)
+               "COINS"  Josefin Sans 600  16px  spacing 6px  Color3.fromRGB(255, 179, 92)
+Ember          Position = UDim2.fromOffset(376, 978)   Size = UDim2.fromOffset(14, 14)
+               fill Color3.fromRGB(255, 154, 60)  corner 50%
+Daily          Position = UDim2.fromOffset(1560, 930)   Size = UDim2.fromOffset(296, 56)
+               stroke 2px rgb(255, 179, 92)
+DailyText      Position = UDim2.fromOffset(1560, 930)   Size = UDim2.fromOffset(296, 56)
+               "DAILY REWARD"  Josefin Sans 600  18px  spacing 6px  Color3.fromRGB(255, 215, 168)
+Status         Position = UDim2.fromOffset(1560, 996)   Size = UDim2.fromOffset(296, 28)
+               "+100 coins"  Josefin Sans 300  20px  spacing normal  Color3.fromRGB(255, 241, 220)

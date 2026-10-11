@@ -1,0 +1,361 @@
+{
+ "Palette": {
+  "Iron": [
+   23,
+   22,
+   20
+  ],
+  "IronEdge": [
+   51,
+   46,
+   41
+  ],
+  "Brass": [
+   158,
+   107,
+   41
+  ],
+  "Glass": [
+   242,
+   184,
+   97
+  ],
+  "Flame": [
+   255,
+   158,
+   46
+  ],
+  "Wood": [
+   76,
+   48,
+   28
+  ],
+  "Grey": [
+   140,
+   140,
+   140
+  ],
+  "Dummy": [
+   89,
+   94,
+   102
+  ]
+ },
+ "Boxes": [
+  {
+   "Name": "Base",
+   "Size": [
+    2.0,
+    0.3,
+    2.0
+   ],
+   "Position": [
+    0,
+    0.15,
+    0
+   ],
+   "RotY": 0,
+   "Slot": "Iron"
+  },
+  {
+   "Name": "Body",
+   "Size": [
+    1.6,
+    2.0,
+    1.6
+   ],
+   "Position": [
+    0,
+    1.3,
+    0
+   ],
+   "RotY": 0,
+   "Slot": "Glass"
+  },
+  {
+   "Name": "Cap",
+   "Size": [
+    2.0,
+    0.35,
+    2.0
+   ],
+   "Position": [
+    0,
+    2.475,
+    0
+   ],
+   "RotY": 0,
+   "Slot": "Iron"
+  },
+  {
+   "Name": "Roof",
+   "Size": [
+    1.3,
+    0.45,
+    1.3
+   ],
+   "Position": [
+    0,
+    2.875,
+    0
+   ],
+   "RotY": 0,
+   "Slot": "Iron"
+  },
+  {
+   "Name": "Handle",
+   "Size": [
+    0.2,
+    0.2,
+    1.4
+   ],
+   "Position": [
+    0,
+    3.85,
+    0
+   ],
+   "RotY": 0,
+   "Slot": "Brass"
+  },
+  {
+   "Name": "BaseStep",
+   "Size": [
+    1.7,
+    0.15,
+    1.7
+   ],
+   "Position": [
+    0,
+    0.375,
+    0
+   ],
+   "RotY": 0,
+   "Slot": "IronEdge"
+  },
+  {
+   "Name": "CapStep",
+   "Size": [
+    1.75,
+    0.15,
+    1.75
+   ],
+   "Position": [
+    0,
+    2.225,
+    0
+   ],
+   "RotY": 0,
+   "Slot": "IronEdge"
+  },
+  {
+   "Name": "RoofTip",
+   "Size": [
+    0.7,
+    0.25,
+    0.7
+   ],
+   "Position": [
+    0,
+    3.225,
+    0
+   ],
+   "RotY": -45,
+   "Slot": "IronEdge"
+  },
+  {
+   "Name": "HandleL",
+   "Size": [
+    0.2,
+    0.75,
+    0.2
+   ],
+   "Position": [
+    0,
+    3.375,
+    0.6
+   ],
+   "RotY": 0,
+   "Slot": "Brass"
+  },
+  {
+   "Name": "HandleR",
+   "Size": [
+    0.2,
+    0.75,
+    0.2
+   ],
+   "Position": [
+    0,
+    3.375,
+    -0.6
+   ],
+   "RotY": 0,
+   "Slot": "Brass"
+  },
+  {
+   "Name": "Flame",
+   "Size": [
+    0.35,
+    0.6,
+    0.35
+   ],
+   "Position": [
+    0,
+    1.0,
+    0
+   ],
+   "RotY": -45,
+   "Slot": "Flame"
+  },
+  {
+   "Name": "FlameTip",
+   "Size": [
+    0.2,
+    0.3,
+    0.2
+   ],
+   "Position": [
+    0,
+    1.4,
+    0
+   ],
+   "RotY": -20,
+   "Slot": "Flame"
+  },
+  {
+   "Name": "Wick",
+   "Size": [
+    0.5,
+    0.2,
+    0.5
+   ],
+   "Position": [
+    0,
+    0.55,
+    0
+   ],
+   "RotY": 0,
+   "Slot": "Brass"
+  },
+  {
+   "Name": "Post-1-1",
+   "Size": [
+    0.25,
+    2.0,
+    0.25
+   ],
+   "Position": [
+    -0.8,
+    1.3,
+    0.8
+   ],
+   "RotY": 0,
+   "Slot": "Iron"
+  },
+  {
+   "Name": "Post-11",
+   "Size": [
+    0.25,
+    2.0,
+    0.25
+   ],
+   "Position": [
+    -0.8,
+    1.3,
+    -0.8
+   ],
+   "RotY": 0,
+   "Slot": "Iron"
+  },
+  {
+   "Name": "Post1-1",
+   "Size": [
+    0.25,
+    2.0,
+    0.25
+   ],
+   "Position": [
+    0.8,
+    1.3,
+    0.8
+   ],
+   "RotY": 0,
+   "Slot": "Iron"
+  },
+  {
+   "Name": "Post11",
+   "Size": [
+    0.25,
+    2.0,
+    0.25
+   ],
+   "Position": [
+    0.8,
+    1.3,
+    -0.8
+   ],
+   "RotY": 0,
+   "Slot": "Iron"
+  },
+  {
+   "Name": "BarF",
+   "Size": [
+    1.4,
+    0.12,
+    0.08
+   ],
+   "Position": [
+    0,
+    1.3,
+    0.82
+   ],
+   "RotY": 0,
+   "Slot": "Iron"
+  },
+  {
+   "Name": "BarB",
+   "Size": [
+    1.4,
+    0.12,
+    0.08
+   ],
+   "Position": [
+    0,
+    1.3,
+    -0.82
+   ],
+   "RotY": 0,
+   "Slot": "Iron"
+  },
+  {
+   "Name": "BarL",
+   "Size": [
+    0.08,
+    0.12,
+    1.4
+   ],
+   "Position": [
+    -0.82,
+    1.3,
+    0
+   ],
+   "RotY": 0,
+   "Slot": "Iron"
+  },
+  {
+   "Name": "BarR",
+   "Size": [
+    0.08,
+    0.12,
+    1.4
+   ],
+   "Position": [
+    0.82,
+    1.3,
+    0
+   ],
+   "RotY": 0,
+   "Slot": "Iron"
+  }
+ ]
+}

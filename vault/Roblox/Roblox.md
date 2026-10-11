@@ -12,5 +12,6 @@
 - [[Roblox Framework]]: how every game is laid out and the rules. Read before adding any system.
 - [[Roblox Kit]]: every module in the framework, what it's for, its one rule.
 - [[Studio Bridge]]: what Claude can do in Studio (read/edit scripts, playtest, upload, export to Blender) and the safety rules.
+- [[UI Craft]]: taste rules that separate designed UI from generated UI, and the preview → exact Roblox numbers technique. Read before any UI work.
 - [[3D Pipeline]]: models from idea to in-game (Blender MCP, AI generation, Substance, upload). Pairs with the [[3D Asset]] workflow.
 - [[Roblox Gotchas]]: traps that already bite everyone once.

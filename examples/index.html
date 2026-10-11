@@ -1,0 +1,193 @@
+<title>Lanternlight Examples</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Oswald:wght@500;600&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+/* Layout: a single long column per pipeline; each stage is a row of evidence (renders, screenshots) with the decision beside it.
+   One deliberate look: the example game's own night palette (iron, brass, amber on navy), so dark in both themes. */
+:root {
+  --night: #0b1020;
+  --night-2: #111830;
+  --iron: #15130f;
+  --rule: #2a2f45;
+  --brass: #c99a52;
+  --amber: #ffd99a;
+  --text: #e8e4dc;
+  --muted: #9aa0b4;
+  --bad: #e07a5f;
+  --display: "Merriweather", Georgia, "Times New Roman", serif;
+  --caps: "Oswald", "Arial Narrow", Arial, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--night); color: var(--text); font: 400 17px/1.6 var(--body); }
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 80px; }
+header { display: grid; gap: 14px; padding-bottom: 28px; border-bottom: 1px solid var(--rule); }
+.eyebrow { font: 600 13px/1 var(--caps); letter-spacing: .28em; color: var(--brass); text-transform: uppercase; }
+h1 { margin: 0; font: 900 clamp(34px, 6vw, 58px)/1.05 var(--display); color: var(--amber); text-wrap: balance; }
+.lede { margin: 0; max-width: 66ch; color: var(--text); }
+nav { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+nav a { font: 600 14px/1 var(--caps); letter-spacing: .14em; text-transform: uppercase; color: var(--night); background: var(--brass); padding: 11px 16px; border-radius: 4px; text-decoration: none; }
+nav a:hover, nav a:focus-visible { background: var(--amber); outline: none; }
+section { padding-top: 48px; }
+h2 { margin: 0 0 6px; font: 700 clamp(26px, 4vw, 36px)/1.15 var(--display); color: var(--text); text-wrap: balance; }
+.sub { margin: 0 0 22px; color: var(--muted); max-width: 70ch; }
+.stage { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 24px; padding: 26px 0; border-top: 1px solid var(--rule); }
+.stage-head { display: grid; align-content: start; gap: 6px; }
+.num { font: 600 13px/1 var(--caps); letter-spacing: .22em; color: var(--brass); text-transform: uppercase; }
+.stage h3 { margin: 0; font: 700 21px/1.25 var(--display); color: var(--amber); }
+.stage p { margin: 0 0 12px; max-width: 68ch; }
+.shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 6px 0 14px; }
+.shots.wide { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+figure { margin: 0; display: grid; gap: 6px; }
+figure img { width: 100%; max-width: 100%; height: auto; display: block; border-radius: 4px; border: 1px solid var(--rule); background: var(--night-2); }
+figcaption { font-size: 14px; color: var(--muted); }
+.flag { display: inline-block; font: 600 12px/1 var(--caps); letter-spacing: .16em; text-transform: uppercase; padding: 5px 8px; border-radius: 3px; margin-right: 6px; vertical-align: 2px; }
+.flag.fix { background: var(--bad); color: var(--night); }
+.flag.pick { background: var(--brass); color: var(--night); }
+.flag.todo { border: 1px solid var(--muted); color: var(--muted); }
+.panel { background: var(--iron); border: 1px solid var(--rule); border-left: 3px solid var(--brass); border-radius: 4px; padding: 14px 16px; margin: 6px 0 14px; }
+pre { margin: 0; overflow-x: auto; font: 400 13px/1.55 var(--mono); color: var(--text); }
+code { font: 400 0.9em var(--mono); color: var(--amber); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+.tablewrap { overflow-x: auto; margin: 4px 0 14px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font: 600 13px/1.2 var(--caps); letter-spacing: .14em; text-transform: uppercase; color: var(--brass); }
+ul { margin: 0 0 12px; padding-left: 20px; max-width: 68ch; }
+li { margin: 4px 0; }
+a { color: var(--amber); }
+footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 15px; }
+@media (max-width: 720px) {
+  .stage { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Claude Brain Starter · worked examples</div>
+    <h1>Lanternlight Examples</h1>
+    <p class="lede">Two small pieces of an example night game, each taken through the starter kit's pipeline stage by stage: a 3D lantern built in Blender, and a HUD designed as three directions, picked, then rebuilt from measured numbers. Every image here was produced by the tools in the repo. The mistakes the audits caught are left in, because they're the useful part.</p>
+    <nav aria-label="Examples">
+      <a href="#model">3D asset: Lantern</a>
+      <a href="#hud">UI screen: HUD</a>
+    </nav>
+  </header>
+
+  <section id="model" aria-labelledby="model-title">
+    <h2 id="model-title">3D asset: the Lantern</h2>
+    <p class="sub">Workflow: <code>vault/Workflows/3D Asset.md</code>. Built from box data by <code>examples/3d-lantern/build_lantern.py</code>, one run per stage, rendered headless in Blender 5.2. 21 boxes, 252 triangles, 3.95 studs tall.</p>
+
+    <div class="stage">
+      <div class="stage-head"><span class="num">Stage 01</span><h3>Brief</h3></div>
+      <div>
+        <p>A standing floor lantern for a blocky, cosy night game. Size in studs, a triangle budget (it's placed dozens of times), how close the camera gets, and the one or two details that sell it: glowing amber panes with a cross bar, and a brass handle.</p>
+        <p>The art style decides the route. Blocky means Claude builds it in Blender from box data, with no AI generation. A realistic character would go through an AI 3D tool instead.</p>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="num">Stage 02</span><h3>Blockout</h3></div>
+      <div>
+        <p><span class="flag fix">Audit caught</span>The first blockout had a floating handle: its side pieces only arrived in the detail pass. "Nothing floats" is on the checklist, so it was fixed before showing. The lineup next to an R15-sized figure showed it's chest-high, which made it a floor lantern, not a hand-held one.</p>
+        <div class="shots">
+          <figure><img src="3d-lantern/02%20Blockout/audit_floating_handle.png" alt="First blockout: the handle bar floats above the lantern" width="800" height="800"><figcaption>First try: handle floats</figcaption></figure>
+          <figure><img src="3d-lantern/02%20Blockout/three_quarter.png" alt="Fixed blockout in grey, three-quarter view" width="800" height="800"><figcaption>Fixed: ¾ view</figcaption></figure>
+          <figure><img src="3d-lantern/02%20Blockout/lineup.png" alt="Grey lantern next to an R15-sized figure for scale" width="800" height="800"><figcaption>Scale lineup with an R15</figcaption></figure>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="num">Stage 03</span><h3>Detail</h3></div>
+      <div>
+        <p>Corner posts, a cross bar on every pane, stepped trims on the base and cap, a turned roof tip, a wick and flame inside. Still grey, so the shapes get judged before colour can flatter them.</p>
+        <div class="shots">
+          <figure><img src="3d-lantern/03%20Detail/front.png" alt="Detailed lantern, front view, grey" width="800" height="800"><figcaption>Front</figcaption></figure>
+          <figure><img src="3d-lantern/03%20Detail/side.png" alt="Detailed lantern, side view, grey" width="800" height="800"><figcaption>Side</figcaption></figure>
+          <figure><img src="3d-lantern/03%20Detail/three_quarter.png" alt="Detailed lantern, three-quarter view, grey" width="800" height="800"><figcaption>¾</figcaption></figure>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="num">Stage 04</span><h3>Materials</h3></div>
+      <div>
+        <p><span class="flag fix">Audit caught</span>The first render's panes came out washed-out cream. Blender's default AgX view transform desaturates bright emissive colour, which Roblox doesn't do. Switched to the Standard view transform, warmed the glass, re-rendered. Colours get judged as the game will show them.</p>
+        <div class="shots">
+          <figure><img src="3d-lantern/04%20Materials/rejected/agx_washed_out.png" alt="Lantern at night with pale cream panes" width="800" height="800"><figcaption>Rejected: AgX, cream panes</figcaption></figure>
+          <figure><img src="3d-lantern/04%20Materials/three_quarter.png" alt="Lantern at night with warm amber glowing panes" width="800" height="800"><figcaption>Final: amber glass, iron, brass</figcaption></figure>
+          <figure><img src="3d-lantern/04%20Materials/lineup.png" alt="Lit lantern next to an R15-sized figure at night" width="800" height="800"><figcaption>Lineup at night</figcaption></figure>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="num">Stage 05</span><h3>In game</h3></div>
+      <div>
+        <p><span class="flag todo">Next step</span><code>05 In Game/rebuild_from_parts.luau</code> rebuilds the lantern from Parts in a test place, straight from <code>boxes.json</code>, so the palette can be tuned under the game's real lighting before the mesh is exported with <code>tools/3d/blender_export_roblox.py</code> and uploaded. This example stops before that step because no test place was open.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="hud" aria-labelledby="hud-title">
+    <h2 id="hud-title">UI screen: the HUD</h2>
+    <p class="sub">Workflow: <code>vault/Workflows/UI Screen.md</code>, taste rules in <code>vault/Roblox/UI Craft.md</code>. The mocks are real 1920×1080 pages in <code>examples/ui-hud/02 Preview/</code>; screenshots and numbers come from <code>tools/ui/measure.mjs</code>. The backdrop is a Blender render of the lantern scene, standing in for an in-game screenshot.</p>
+
+    <div class="stage">
+      <div class="stage-head"><span class="num">Stage 01</span><h3>Spec</h3></div>
+      <div>
+        <p>Coins always visible, a daily reward button, a status line. It shows real data only and works in every state.</p>
+        <div class="tablewrap"><table>
+          <thead><tr><th>State</th><th>What shows</th></tr></thead>
+          <tbody>
+            <tr><td>Loading</td><td>0 coins; the button still works (the server answers safely)</td></tr>
+            <tr><td>Ready</td><td>Button idle; it grows on hover and shrinks on press</td></tr>
+            <tr><td>Claimed</td><td>Coins update, status "+100 coins"</td></tr>
+            <tr><td>Cooldown</td><td>Status "back in 6h 12m"</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="num">Stage 02</span><h3>Three directions</h3></div>
+      <div>
+        <p>Three genuinely different directions, each drawn over the game frame and each using only fonts Roblox ships. The frame matters: <span class="flag fix">C fails</span>its big coin number sits on top of a bright lantern and nearly disappears, which a flat background would have hidden.</p>
+        <div class="shots wide">
+          <figure><img src="ui-hud/shots/A.png" alt="Direction A: iron plaque with brass border top-left showing COINS 1,240 and a brass DAILY REWARD button" width="1920" height="1080"><figcaption><span class="flag pick">Picked</span>A · Brass Plaque (Merriweather + Oswald)</figcaption></figure>
+          <figure><img src="ui-hud/shots/B.png" alt="Direction B: a hanging paper tag with handwritten 1,240 coins and a dashed claim daily pill" width="1920" height="1080"><figcaption>B · Paper Tag (Kalam + Patrick Hand)</figcaption></figure>
+          <figure><img src="ui-hud/shots/C.png" alt="Direction C: thin large 1,240 bottom-left over a lantern, outlined DAILY REWARD bottom-right" width="1920" height="1080"><figcaption>C · Ember Type (Josefin Sans)</figcaption></figure>
+        </div>
+        <p><strong>Why A:</strong> it takes its iron, brass and amber straight from the lantern model, so the HUD and the world read as one game. It stays legible over any part of the scene. B is charming, but handwritten numerals are slow to read at a glance. C is clean but too quiet for a busy night scene.</p>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="num">Stage 03</span><h3>Build from numbers</h3></div>
+      <div>
+        <p><code>node tools/ui/measure.mjs "02 Preview/A Brass Plaque.html"</code> reads every tagged element and prints its Roblox numbers:</p>
+        <div class="panel"><pre>Plaque     Position = UDim2.fromOffset(48, 40)   Size = UDim2.fromOffset(340, 104)
+           fill Color3.fromRGB(21, 19, 15)  corner 6px  stroke 2px rgb(158, 107, 41)
+Coins      Position = UDim2.fromOffset(70, 78)   Size = UDim2.fromOffset(300, 56)
+           "1,240"  Merriweather 900  46px  Color3.fromRGB(255, 217, 154)
+Daily      Position = UDim2.fromOffset(48, 160)  Size = UDim2.fromOffset(340, 64)
+           fill Color3.fromRGB(158, 107, 41)  corner 6px  stroke 2px rgb(214, 164, 90)</pre></div>
+        <p><span class="flag fix">Audit caught</span>The first measurement gave 344×108 instead of 340×104, because CSS borders add to the size unless the mock uses <code>box-sizing: border-box</code>. A few pixels like that are why a "close" build looks wrong. Fixed in the mocks, and the Fusion build insets each frame by its UIStroke width, since Roblox draws the stroke outside the edge.</p>
+        <p>Result: <code>examples/ui-hud/03 Build/HudController.luau</code>, a drop-in for the framework's HUD, with every offset taken from the measurement.</p>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="num">Stage 04</span><h3>Compare in game</h3></div>
+      <div>
+        <p><span class="flag todo">Next step</span>Swap the build into a game, take an in-game screenshot at 1920×1080, and lay it next to <code>shots/A.png</code>. Tune stroke weight, letter spacing and the button glow until they read the same, then click every control in a playtest. The build has not been playtested yet, which is why the template still ships its original, tested HUD.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Run it yourself: <code>Blender --background --python examples/3d-lantern/build_lantern.py -- materials out/</code> and <code>node tools/ui/measure.mjs "examples/ui-hud/02 Preview/A Brass Plaque.html" --png a.png</code>. Everything shown is in the repo under <code>examples/</code>.
+  </footer>
+</div>

@@ -1,0 +1,58 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><title>HUD C: Ember Type</title>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;600&display=swap" rel="stylesheet">
+<style>*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#05070d;overflow:hidden}
+[data-canvas]{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;background:#0b1020 url("../frame.jpg") center/cover no-repeat}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.coins{position:absolute;left:64px;top:884px;width:520px;height:96px;font:300 88px/96px "Josefin Sans",sans-serif;color:#fff1dc;letter-spacing:2px}
+.rule{position:absolute;left:66px;top:984px;width:300px;height:2px;background:#ffb35c;opacity:.8}
+.label{position:absolute;left:66px;top:996px;width:300px;height:22px;font:600 16px/22px "Josefin Sans",sans-serif;letter-spacing:6px;color:#ffb35c}
+.ember{position:absolute;left:376px;top:978px;width:14px;height:14px;border-radius:50%;background:#ff9a3c;box-shadow:0 0 14px 4px rgba(255,154,60,.55);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 22px 8px rgba(255,154,60,.35)}}
+.daily{position:absolute;left:1560px;top:930px;width:296px;height:56px;border:2px solid #ffb35c;cursor:pointer;transition:background .2s}
+.daily:hover{background:rgba(255,179,92,.14)}
+.dailytext{position:absolute;left:1560px;top:930px;width:296px;height:56px;font:600 18px/56px "Josefin Sans",sans-serif;letter-spacing:6px;text-align:center;color:#ffd7a8;pointer-events:none}
+.status{position:absolute;left:1560px;top:996px;width:296px;height:28px;font:300 20px/28px "Josefin Sans",sans-serif;text-align:center;color:#fff1dc}
+</style></head><body>
+<div data-canvas>
+  <div class="coins" data-rbx="Coins">1,240</div>
+  <div class="rule" data-rbx="Rule"></div>
+  <div class="label" data-rbx="Label">COINS</div>
+  <div class="ember" data-rbx="Ember"></div>
+  <div class="daily" data-rbx="Daily"></div>
+  <div class="dailytext" data-rbx="DailyText">DAILY REWARD</div>
+  <div class="status" data-rbx="Status">+100 coins</div>
+</div>
+<script>(function(){var c=document.querySelector("[data-canvas]");function f(){var s=Math.min(innerWidth/1920,innerHeight/1080);c.style.transform="scale("+s+")";}addEventListener("resize",f);f();})();</script>
+<!-- Paste at the end of a 1920x1080 UI mock. Tag elements with data-rbx="Name".
+     tools/ui/measure.py reads the JSON this writes and turns it into Roblox numbers. -->
+<script>
+(function () {
+  function measure() {
+    var canvas = document.querySelector("[data-canvas]") || document.body;
+    var box = canvas.getBoundingClientRect();
+    var scale = box.width / 1920 || 1;
+    var out = [];
+    document.querySelectorAll("[data-rbx]").forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      var cs = getComputedStyle(el);
+      out.push({
+        name: el.getAttribute("data-rbx"),
+        x: Math.round((r.left - box.left) / scale), y: Math.round((r.top - box.top) / scale),
+        w: Math.round(r.width / scale), h: Math.round(r.height / scale),
+        text: el.children.length ? null : el.textContent.trim(),
+        font: cs.fontFamily.split(",")[0].replace(/["']/g, "").trim(), weight: cs.fontWeight,
+        size: Math.round(parseFloat(cs.fontSize)), spacing: cs.letterSpacing,
+        color: cs.color, background: cs.backgroundColor, radius: cs.borderTopLeftRadius,
+        stroke: cs.borderTopWidth !== "0px" ? cs.borderTopWidth + " " + cs.borderTopColor : null,
+        opacity: cs.opacity
+      });
+    });
+    var tag = document.getElementById("rbx-rects") || document.body.appendChild(Object.assign(document.createElement("script"), { id: "rbx-rects", type: "application/json" }));
+    tag.textContent = JSON.stringify(out);
+  }
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(function () { setTimeout(measure, 600); });
+})();
+</script>
+</body></html>
