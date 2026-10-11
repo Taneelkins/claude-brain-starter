@@ -1,0 +1,18 @@
+{
+  "syncFolderName": true,
+  "ctrlKey": true,
+  "altKey": false,
+  "hideFolderNote": true,
+  "autoCreate": false,
+  "storageLocation": "insideFolder",
+  "folderNoteName": "{{folder_name}}",
+  "newFolderNoteName": "{{folder_name}}",
+  "oldFolderNoteName": "{{folder_name}}",
+  "folderNoteType": ".md",
+  "underlineFolder": true,
+  "openFolderNoteOnClickInPath": true,
+  "showDeleteConfirmation": true,
+  "showRenameConfirmation": true,
+  "syncMove": true,
+  "syncDelete": false
+}
