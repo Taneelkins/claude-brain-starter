@@ -25,3 +25,4 @@
 - [ ] Reproduced before, verified after, and the verification is named.
 - [ ] No debug prints or probe files left behind.
 - [ ] If the root cause is still unknown, say so; don't sell a symptom patch as the fix.
+- [ ] **A/B on the same setup:** old code swapped back in, same scenario, before claiming any "fixed" number. A one-off "before" from another session proves little.

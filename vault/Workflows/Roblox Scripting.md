@@ -28,4 +28,14 @@
 - [ ] Data changes go through the replion from `DataService.Get`; new saved fields are in `DataService/Template.luau`.
 - [ ] Lifetimes use the Janitor from `PlayerService`/`CharacterController` or the screen's Fusion scope.
 - [ ] `selene src` passes; no `ZZ_` leftovers.
-- [ ] Output clean on both sides during the playtest.
+- [ ] Output clean on both sides during the playtest. **Read the console after the first playtest before trusting any numbers:** a module that errors on load leaves the system off, and readings can still look plausible.
+- [ ] Server checks use real-world bounds: `workspace:GetServerTimeNow()` is ~1.8e9 (a 1e9 cap rejects everything); count caps sit above the game's real highest value; NaN/inf rejected; client positions and directions never trusted as-is.
+- [ ] Player-id checks accept Studio test players: their UserIds are negative (Player1 = −1).
+- [ ] Every button is pressed once in a playtest, not only its server handler called. Every player-facing counter ("hit it to stop it") is checked from where players really stand.
+- [ ] A spec'd control is checked against what Roblox can read (no thumbstick distance) and the keys already bound; a key changing job is called out as a gameplay change.
+- [ ] A save-format change keeps old saves loading: a version field (default 0 in the template), a migrate step that raises it, and a repair pass that parks bad data instead of deleting it. Studio's mock save persists between Play runs, so tests snapshot and restore.
+- [ ] Replion: send a whole table once, then set only the values that change.
+- [ ] Visuals that follow moving models (ropes, props) are welded into that model and drawn with Beams; no constraints between two driven models, no anchored parts moved from the server (they lag).
+- [ ] A plan's facts about live code are checked in one quick playtest probe before building on them. Plans written from reading code can be wrong.
+- [ ] Moves that grab or carry a player are checked in a real screenshot (camera framing, body height), not only by logs.
+- [ ] Parallel chats on one game: re-read sibling Work folders and the uncommitted diff of shared files (data template, services) right before building anything that saves data.

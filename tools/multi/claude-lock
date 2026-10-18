@@ -1,0 +1,164 @@
+#!/usr/bin/env python3
+# claude-lock: lets chats take turns on shared things (test window, screen, blender slots, shared files)
+#   claude-lock take <resource> --who "<chat>" --why "<what for>" [--wait 540] [--ttl 300]
+#   claude-lock renew <resource> --who "<chat>"
+#   claude-lock give <resource> --who "<chat>"
+#   claude-lock status
+import argparse, json, os, shutil, sys, time
+
+Root = os.path.expanduser("~/.claude-locks")
+Locks = os.path.join(Root, "held")
+Queue = os.path.join(Root, "queue")
+
+
+def Clean(name):
+    return name.replace("/", "_").replace(" ", "_")
+
+
+def ReadInfo(path):
+    try:
+        with open(os.path.join(path, "info.json")) as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+
+def Stale(info, now):
+    return info is None or now - info.get("beat", 0) > info.get("ttl", 300)
+
+
+def Holder(res):
+    path = os.path.join(Locks, Clean(res))
+    if not os.path.isdir(path):
+        return None, path
+    return ReadInfo(path), path
+
+
+def Tickets(res):
+    folder = os.path.join(Queue, Clean(res))
+    os.makedirs(folder, exist_ok=True)
+    now = time.time()
+    out = []
+    for name in sorted(os.listdir(folder)):
+        full = os.path.join(folder, name)
+        try:
+            with open(full) as f:
+                t = json.load(f)
+        except Exception:
+            continue
+        if now - t.get("beat", 0) > 30:
+            # a waiter that stopped polling (chat died) leaves the line
+            os.remove(full)
+            continue
+        out.append((name, full, t))
+    return out
+
+
+def Take(a):
+    os.makedirs(Locks, exist_ok=True)
+    folder = os.path.join(Queue, Clean(a.resource))
+    os.makedirs(folder, exist_ok=True)
+    ticket = os.path.join(folder, f"{time.time():.6f}-{os.getpid()}")
+    start = time.time()
+    told = False
+    while True:
+        now = time.time()
+        with open(ticket, "w") as f:
+            json.dump({"who": a.who, "why": a.why, "beat": now, "since": start}, f)
+        info, path = Holder(a.resource)
+        if info and info.get("who") == a.who:
+            os.remove(ticket)
+            info["beat"] = now
+            info["why"] = a.why
+            with open(os.path.join(path, "info.json"), "w") as f:
+                json.dump(info, f)
+            print(f"GOT {a.resource} (already yours)")
+            return 0
+        if os.path.isdir(path) and Stale(info, now):
+            old = info.get("who") if info else "unknown"
+            shutil.rmtree(path, ignore_errors=True)
+            print(f"broke a stale lock on {a.resource} (was {old})")
+        line = Tickets(a.resource)
+        first = line and line[0][1] == ticket
+        if first:
+            try:
+                os.mkdir(path)
+                with open(os.path.join(path, "info.json"), "w") as f:
+                    json.dump({"who": a.who, "why": a.why, "since": now, "beat": now, "ttl": a.ttl}, f)
+                os.remove(ticket)
+                print(f"GOT {a.resource}")
+                return 0
+            except FileExistsError:
+                pass
+        if not told:
+            info, _ = Holder(a.resource)
+            ahead = [t["who"] for _, full, t in line if full != ticket]
+            held = f"{info.get('who')} ({info.get('why')})" if info else "nobody"
+            print(f"waiting for {a.resource}: held by {held}; in line ahead: {', '.join(ahead) or 'none'}")
+            told = True
+        if now - start > a.wait:
+            os.remove(ticket)
+            print(f"TIMEOUT on {a.resource} after {a.wait}s; still held by {held}")
+            return 2
+        time.sleep(1)
+
+
+def Renew(a):
+    info, path = Holder(a.resource)
+    if not info or info.get("who") != a.who:
+        print(f"NOT HELD: {a.resource} isn't yours")
+        return 1
+    info["beat"] = time.time()
+    with open(os.path.join(path, "info.json"), "w") as f:
+        json.dump(info, f)
+    print(f"renewed {a.resource}")
+    return 0
+
+
+def Give(a):
+    info, path = Holder(a.resource)
+    if not os.path.isdir(path):
+        print(f"{a.resource} wasn't held")
+        return 0
+    if info and info.get("who") != a.who and not a.force:
+        print(f"NOT YOURS: {a.resource} is held by {info.get('who')} (use --force only if the owner says so)")
+        return 1
+    shutil.rmtree(path, ignore_errors=True)
+    print(f"released {a.resource}")
+    return 0
+
+
+def Status(a):
+    now = time.time()
+    found = False
+    for folder in sorted(os.listdir(Locks)) if os.path.isdir(Locks) else []:
+        info = ReadInfo(os.path.join(Locks, folder))
+        state = "STALE" if Stale(info, now) else "held"
+        if info:
+            print(f"{folder}: {state} by {info['who']} for {int(now - info['since'])}s, {info['why']}")
+        found = True
+    for folder in sorted(os.listdir(Queue)) if os.path.isdir(Queue) else []:
+        line = Tickets(folder)
+        if line:
+            print(f"{folder} queue: " + " → ".join(t["who"] for _, _, t in line))
+            found = True
+    if not found:
+        print("nothing held, nobody waiting")
+    return 0
+
+
+Parser = argparse.ArgumentParser(prog="claude-lock")
+Sub = Parser.add_subparsers(dest="cmd", required=True)
+for Name in ("take", "renew", "give"):
+    P = Sub.add_parser(Name)
+    P.add_argument("resource")
+    P.add_argument("--who", required=True)
+    if Name == "take":
+        P.add_argument("--why", default="")
+        P.add_argument("--wait", type=int, default=540)
+        P.add_argument("--ttl", type=int, default=300)
+    if Name == "give":
+        P.add_argument("--force", action="store_true")
+Sub.add_parser("status")
+Args = Parser.parse_args()
+sys.exit({"take": Take, "renew": Renew, "give": Give, "status": Status}[Args.cmd](Args))

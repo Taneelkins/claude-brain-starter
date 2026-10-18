@@ -7,6 +7,7 @@
 #   VAULT=~/Notes/Brain ./install.sh     # somewhere else
 #   NAME=Sam ./install.sh                # skip the name prompt
 #   ROBLOX=yes ./install.sh              # also set up the Roblox tools without asking (ROBLOX=no to skip)
+#   MULTI=yes ./install.sh               # also set up the many-chats tools without asking (MULTI=no to skip)
 set -euo pipefail
 
 Repo="$(cd "$(dirname "$0")" && pwd)"
@@ -135,6 +136,72 @@ if [ "$Roblox" = yes ]; then
   command -v rokit >/dev/null || warn "For new games, install Rokit: https://github.com/rojo-rbx/rokit"
 fi
 
+# 6. Many chats at once: claude-lock, 6 Blender slots behind one shared server, playtest + long-chat guard hooks
+Multi="${MULTI:-ask}"
+if [ "$Multi" = ask ]; then
+  read -rp "Set up the tools for running several chats at once (locks, 6 Blender slots, guard hooks)? [y/N] " Answer || true
+  case "${Answer:-n}" in [Yy]*) Multi=yes ;; *) Multi=no ;; esac
+fi
+if [ "$Multi" = yes ]; then
+  Tools="$HOME/claude-tools"   # outside ~/Documents so the background service may run it
+  mkdir -p "$Tools"
+  cp "$Repo"/tools/multi/* "$Tools/" && chmod +x "$Tools"/*
+  say "Copied claude-lock, blender-slot and the guard hooks to $Tools"
+
+  if [ "$(uname)" = Darwin ] && command -v uvx >/dev/null && command -v claude >/dev/null; then
+    Agent="$HOME/Library/LaunchAgents/com.claude-brain.blender-bridge.plist"
+    mkdir -p "$(dirname "$Agent")"
+    cat > "$Agent" <<PLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.claude-brain.blender-bridge</string>
+  <key>ProgramArguments</key><array><string>$Tools/blender-bridge</string></array>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>ThrottleInterval</key><integer>10</integer>
+  <key>StandardOutPath</key><string>$Tools/blender-bridge.log</string>
+  <key>StandardErrorPath</key><string>$Tools/blender-bridge.log</string>
+</dict>
+</plist>
+PLIST
+    launchctl bootout "gui/$(id -u)" "$Agent" 2>/dev/null || true
+    launchctl bootstrap "gui/$(id -u)" "$Agent" || warn "Couldn't start the Blender bridge service; run: launchctl bootstrap gui/$(id -u) \"$Agent\""
+    for Slot in blender blender2 blender3 blender4 blender5 blender6; do
+      if claude mcp get "$Slot" 2>/dev/null | grep -q "Type: stdio"; then
+        claude mcp remove "$Slot" -s user >/dev/null 2>&1 || true
+      fi
+      claude mcp get "$Slot" >/dev/null 2>&1 || claude mcp add --transport http "$Slot" -s user "http://127.0.0.1:9870/servers/$Slot/mcp" >/dev/null
+    done
+    say "Blender slots blender..blender6 now share one server (check: curl -s 127.0.0.1:9870/status)"
+  else
+    warn "The shared Blender server is Mac-only for now (needs uv and the Claude CLI); keeping the single 'blender' server"
+  fi
+
+  if [ "$(uname)" = Darwin ]; then
+    TOOLS="$Tools" python3 - <<'PY'
+import json, os
+Path = os.path.expanduser("~/.claude/settings.json")
+Tools = os.environ["TOOLS"]
+Data = json.load(open(Path)) if os.path.exists(Path) else {}
+Hooks = Data.setdefault("hooks", {})
+def Add(Event, Command, Matcher=None):
+    Entries = Hooks.setdefault(Event, [])
+    if any(h.get("command") == Command for e in Entries for h in e.get("hooks", [])):
+        return
+    Entry = {"hooks": [{"type": "command", "command": Command}]}
+    if Matcher:
+        Entry["matcher"] = Matcher
+    Entries.append(Entry)
+Add("PreToolUse", Tools + "/play-guard", "mcp__Roblox_Studio__start_stop_play")
+Add("Stop", Tools + "/context-guard")
+json.dump(Data, open(Path, "w"), indent=2)
+PY
+    say "Added the playtest guard and long-chat guard hooks to ~/.claude/settings.json"
+  fi
+fi
+
 cat <<EOF
 
 Done. Next:
@@ -142,4 +209,5 @@ Done. Next:
   2. When it asks, click "Trust author and enable plugins".
   3. Restart Claude Code (and Roblox Studio) so the new tools load.
   4. In Claude Code:  /new-game <name>   (or /new-project for anything that isn't a Roblox game)
+  5. Running several chats at once? Read Roblox/Running Many Chats in the vault.
 EOF

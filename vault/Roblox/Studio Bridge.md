@@ -25,6 +25,7 @@
 Don't use the bridge's old edit and playtest tools (`run_code`, `run_in_play_mode`, `edit_script`…). Roblox maintains the built-in ones.
 
 ## Rules
+- **Several windows or chats:** [[Running Many Chats]] (window jobs, locks, playtest guard).
 - **Right place first:** match the place name from `list_roblox_studios`, then start every `execute_luau` with `assert(game.PlaceId == <id>)`.
 - **With Rojo, code changes go on disk**, not through `multi_edit` (Rojo overwrites them). Use Studio tools for reading, testing, building non-code instances, and assets.
 - **Always stop a playtest** (`start_stop_play false`) and check `get_studio_state` reads Edit before moving on.

@@ -25,11 +25,12 @@ Making a Roblox game with Claude goes wrong in predictable ways. This kit fixes 
 | `vault/` | The brain's starting notes. Copied to `~/Documents/Claude Brain` **once**, then it's the user's |
 | `vault/Playbook/Claude Rules.md` | Becomes the user's global `~/.claude/CLAUDE.md` (symlink). Rule 1 = partner, not yes-man |
 | `vault/Roblox/` | Framework rules, module kit, Studio MCP + bridge, UI craft, 3D pipeline, gotchas |
-| `vault/Workflows/` | Feature, Bug Fix, Roblox Scripting, UI Screen, 3D Asset, Studio Safety |
+| `vault/Workflows/` | Feature, Bug Fix, Roblox Scripting, UI Screen, 3D Asset, Animation, VFX & Sound, Game Design, Big Project (manager chat + job chats), Studio Safety |
 | `claude/commands/` | `/brain`, `/save`, `/brain-audit`, `/new-project`, `/new-game` (installed into `~/.claude/commands` with paths filled in) |
 | `roblox-template/` | The base framework; `setup.sh` installs tools and packages; its README has the full tour |
 | `tools/ui/measure.mjs` | Measures a 1920×1080 HTML mock into Roblox offsets, fonts and colours (headless Chromium over DevTools) |
 | `tools/3d/` | Blender build template (wrong-file guard), Roblox GLB exporter, Substance Painter one-shot job |
+| `tools/multi/` | Running many chats: `claude-lock` (take turns), `blender-slot` + `blender-bridge` (6 Blender slots behind one shared server), `play-guard` and `context-guard` hooks. Installed to `~/claude-tools` by `install.sh` (optional step); explained in `vault/Roblox/Running Many Chats.md` |
 | `examples/` | Worked examples: a 3D lantern and a HUD through every stage, audit catches included |
 
 ## If you're helping someone set this up
@@ -43,6 +44,7 @@ Making a Roblox game with Claude goes wrong in predictable ways. This kit fixes 
    - clones and builds the Studio bridge into `~/claude-studio-bridge` (**never under `~/Documents`**: macOS blocks the daemon there), copies its plugin to `~/Documents/Roblox/Plugins`, registers the MCP server, installs the always-on daemon
    - on Mac, registers Roblox's built-in Studio MCP (`Roblox_Studio` → `/Applications/RobloxStudio.app/Contents/MacOS/StudioMCP`); they still enable it in Studio: Assistant → ⋯ → Settings → MCP Servers
    - registers the `blender` MCP server (`uvx mcp-for-blender@2.1.9`) and installs its Blender add-on
+   - optional, Mac: the many-chats tools: copies `tools/multi/` to `~/claude-tools`, runs one shared Blender server (LaunchAgent `com.claude-brain.blender-bridge`, port 9870) behind slots `blender`…`blender6`, adds the playtest and long-chat guard hooks to `~/.claude/settings.json`
 3. Then: open the vault in Obsidian (Trust author), restart Claude Code and Studio, run `rojo plugin install`, then `/new-game <name>`.
 4. Troubleshooting:
    - Studio tools missing: check Studio's MCP Servers setting is on and `claude mcp get Roblox_Studio` works. Tools only load in a chat started after that.
@@ -60,5 +62,5 @@ Day-to-day work does **not** happen in this repo. Each game lives in its own fol
 - **It's public.** No personal details, place IDs, keys, server names or private project info. Run a quick grep before committing.
 - **Framework changes** follow its own rules (`roblox-template/README.md`, `vault/Roblox/Roblox Framework.md`). Check `selene src` and `rojo build`, and playtest through the built-in Studio MCP in a scratch place. Assert `game.PlaceId == 0` and delete every `ZZ_` probe afterwards.
 - **Notes are pointers, not dumps**; workflows stay under ~80 lines; note names are unique across the vault (Structure Law in `vault/Playbook/Playbook.md`).
-- Say plainly what was tested and what wasn't. Not yet exercised: the installer's daemon and Blender add-on steps on a fresh machine, and `examples/ui-hud/03 Build/HudController.luau` in a playtest.
+- Say plainly what was tested and what wasn't. Not yet exercised: the installer's daemon, Blender add-on and many-chats steps on a fresh machine, and `examples/ui-hud/03 Build/HudController.luau` in a playtest.
 - Commit messages say what changed and why; push to `main`.

@@ -1,0 +1,54 @@
+#!/bin/bash
+# blender-slot <1-6> [file.blend]
+# opens a new Blender wired to that slot's MCP port (slot 1 = blender, 2 = blender2 ...)
+Slot=$1
+File=$2
+case $Slot in
+	1) Port=9876; Name=blender ;;
+	2) Port=9877; Name=blender2 ;;
+	3) Port=9878; Name=blender3 ;;
+	4) Port=9879; Name=blender4 ;;
+	5) Port=9880; Name=blender5 ;;
+	6) Port=9881; Name=blender6 ;;
+	*) echo "usage: blender-slot <1-6> [file.blend]"; exit 1 ;;
+esac
+
+if lsof -iTCP:$Port -sTCP:LISTEN >/dev/null 2>&1; then
+	echo "slot $Slot ($Name, port $Port) is already running"
+	exit 0
+fi
+
+App="${BLENDER_APP:-}"
+for Try in "/Applications/Blender.app" "$HOME/Applications/Blender.app" "$HOME/Library/Application Support/Steam/steamapps/common/Blender/Blender.app"; do
+	[ -z "$App" ] && [ -d "$Try" ] && App="$Try"
+done
+if [ -z "$App" ]; then
+	echo "Blender not found; set BLENDER_APP=/path/to/Blender.app"
+	exit 1
+fi
+
+Py="import bpy
+def Go():
+    try:
+        Scene = bpy.context.scene
+        Scene.blendermcp_port = $Port
+        bpy.ops.blendermcp.start_server()
+    except Exception as Err:
+        print('blender-slot: start failed, retrying', Err)
+        return 1.0
+    return None
+bpy.app.timers.register(Go, first_interval=2.0)"
+
+Args=()
+[ -n "$File" ] && Args+=("$File")
+open -n "$App" --args "${Args[@]}" --python-expr "$Py"
+
+for i in $(seq 1 60); do
+	if lsof -iTCP:$Port -sTCP:LISTEN >/dev/null 2>&1; then
+		echo "slot $Slot ready: $Name on port $Port"
+		exit 0
+	fi
+	sleep 1
+done
+echo "slot $Slot didn't start within 60s"
+exit 1

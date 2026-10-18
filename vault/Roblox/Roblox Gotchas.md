@@ -23,6 +23,15 @@
 - Design at 1920×1080 inside the canvas; never mix Scale and Offset sizing on the same screen without a reason.
 
 ## Studio & Rojo
+- **Studio test players have negative UserIds** (Player1 = −1): `>= 1` id checks refuse them.
+- **`workspace:GetServerTimeNow()` is ~1.8e9**: sanity caps below that reject every call.
+- **New image ids load white** if Studio fetched them before moderation said `Approved`, for the whole session. Re-upload under a new id to recover.
+- **Images in someone else's experience need share access** (uploaded by you, place owned by a group or friend).
+- **Built-in `screen_capture` skips ColorCorrection/Bloom/CoreGui**: real-window captures for colour; park a plugin GUI in StarterGui to capture it.
+- **Roblox fonts:** ► ▼ render, ▸ ▾ are blank.
+- **UIGradient multiplies** the fill colour: put gradients on white.
+- **Edit-mode R15 dummies** (`CreateHumanoidModelFromDescription`) use AnimationConstraints that don't solve in edit mode: anchor parts and pose by setting CFrames.
+- **A new local plugin needs a Studio restart** to load.
 - **Script edits in Studio get overwritten by Rojo** → edit on disk. Building and terrain still happen in Studio.
 - **Cmdr 1.13 uses new Luau syntax** (`const`, `@self` requires): it only runs inside Studio/Roblox, not in standalone Luau tools.
 - **`WaitForChild` with no timeout can hang forever** → give a timeout for anything that might not exist (StreamingEnabled parts especially).

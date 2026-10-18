@@ -11,6 +11,7 @@
 2. Load only what its **Inputs** table names. Project notes are the references; workflows never copy them.
 3. Follow the steps in order. At every **Checkpoint**, stop and show; don't run past it.
 4. Run the **Audit** before showing anything. Fail = fix first. Say which checks passed.
+5. Show each checkpoint on the chat's one report page ([[Claude Rules]] Rule 2).
 
 ## Two shapes
 - **Loop:** iterative engineering. Short contract, checkpoints only for big calls, then an audit.
@@ -24,10 +25,14 @@
 | [[Roblox Scripting]] | Loop |
 | [[UI Screen]] | Pipeline |
 | [[3D Asset]] | Pipeline |
+| [[Animation]] | Pipeline |
+| [[VFX & Sound]] | Pipeline |
+| [[Game Design]] | Pipeline |
+| [[Big Project]] (manager chat + job chats) | Pipeline |
 
 Shared by every Roblox workflow: [[Studio Safety]].
 
-Add your own from `_templates/Workflow.md` when a kind of task keeps coming up (VFX, sound, lore, monetization…).
+Add your own from `_templates/Workflow.md` when a kind of task keeps coming up (lore, monetization, admin tools…).
 
 ## Outputs
 Each task's files (briefs, previews, renders, build scripts) go in the game's `Work/<YYYY-MM-DD> <task>/` folder, outside `src/`. Pipelines add stage folders: `01 Brief/`, `02 Blockout/`…

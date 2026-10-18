@@ -30,6 +30,9 @@ Every time anything is added, it conforms, or it gets reorganized:
 3. **Load sections, not whole notes.** Long Gotchas and Logs are read only in the sections the task touches.
 4. **Learn from references, not from earlier outputs**, so a weak first draft never becomes the standard.
 5. **Audit before showing.** Every workflow has a pass/fail checklist that runs before you see anything.
+6. **Every output is a saved, editable file** in the project's `Work/` folder. The scratchpad is only for throwaway files.
+7. **A step is done when you say so**, not when the last chat's status note says so.
+8. **Detailed live pass before showing:** test the real thing, every page the change touches, every safe button, scroll to the end of every list, read the console. Guessed data is labelled "Unverified" with the reason.
 
 ## 🎚️ Phase → Model
 Claude flags the switch; you change it in the model picker.
@@ -52,6 +55,10 @@ Read [[Plans]] first, then the project's plans note. Each entry's **Read for sco
 
 ## 🧹 Session hygiene
 - **One task per chat.** Finish, `/save`, start a fresh chat. Long chats get compacted and Claude starts forgetting rules.
+- **Context budget:** a fresh chat costs ~60–140k tokens just loading notes, so don't restart for nothing; but every turn re-reads the whole chat. Hand off at the next stage break once a chat passes ~300k, never past ~500k (quality drops). The context guard hook ([[Running Many Chats]]) reminds Claude.
+- **Big project = manager chat + job chats** ([[Big Project]]). One chat per system or asset: two chats on the same thing build it twice and collide.
+- **Read big notes by section:** grep the headings, then read only the range you need. Never load a whole long Gotchas or Log note.
+- **Restarting the Claude app kills background work** (watchers, scheduled wake-ups). After a restart, nudge any chat that was waiting.
 - **Save after each chunk**, not just at the end. Saving is manual on purpose: you review what goes in. Claude nudges you.
 - **Freshness:** a stale note is worse than none, because Claude acts on it confidently. When a note is checked against real code, stamp `> verified: <date>` under its purpose line. Run `/brain-audit` now and then.
 - **Brain vs memory:** Claude's own memory (`~/.claude/projects/.../memory`) is for *how Claude should behave*. Project facts go in the brain.

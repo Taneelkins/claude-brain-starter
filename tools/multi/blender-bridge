@@ -1,0 +1,11 @@
+#!/bin/zsh
+# one shared MCP server for all six Blender slots (instead of six servers per chat)
+export PATH=/opt/homebrew/bin:/usr/local/bin:$HOME/.local/bin:/usr/bin:/bin
+export DISABLE_TELEMETRY=true
+exec uvx mcp-proxy@0.13.0 --host 127.0.0.1 --port 9870 --pass-environment \
+  --named-server blender  'uvx mcp-for-blender@2.1.9 --port 9876' \
+  --named-server blender2 'uvx mcp-for-blender@2.1.9 --port 9877' \
+  --named-server blender3 'uvx mcp-for-blender@2.1.9 --port 9878' \
+  --named-server blender4 'uvx mcp-for-blender@2.1.9 --port 9879' \
+  --named-server blender5 'uvx mcp-for-blender@2.1.9 --port 9880' \
+  --named-server blender6 'uvx mcp-for-blender@2.1.9 --port 9881'
