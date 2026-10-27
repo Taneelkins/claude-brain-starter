@@ -1,6 +1,11 @@
-# 🧠 Roblox Dev with Claude: Starter Kit
+# Roblox Dev with Claude: Starter Kit
 
-### 📖 [Read the full guide →](https://claude.ai/artifact/3bpvaYyZkPqS3uQGohvuqP)
+![Claude Code](https://img.shields.io/badge/Claude%20Code-ready-D97757) ![Roblox](https://img.shields.io/badge/Roblox-Luau-00A2FF?logo=roblox&logoColor=white) ![Obsidian](https://img.shields.io/badge/Obsidian-vault-7C3AED?logo=obsidian&logoColor=white) ![Blender](https://img.shields.io/badge/Blender-MCP-E87D0D?logo=blender&logoColor=white) ![License](https://img.shields.io/badge/license-MIT-blue)
+
+![A HUD and lanterns built start to finish with the kit](examples/ui-hud/shots/C.png)
+<sub>From the worked examples: a lantern model and a HUD taken through every stage with Claude.</sub>
+
+### [Read the full guide →](https://claude.ai/artifact/3bpvaYyZkPqS3uQGohvuqP)
 Setup, how everything works, worked examples, playable UI previews from real games (Verdict and Bleach), the 3D pipeline, and how to prompt, all on one page.
 
 Everything you need to make Roblox games with [Claude Code](https://claude.com/claude-code) as your dev partner. One install gets you:
